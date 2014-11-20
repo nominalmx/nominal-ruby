@@ -20,6 +20,9 @@ require "nominal/invoice_attributes/issuer"
 require "nominal/invoice_attributes/receptor"
 require "nominal/invoice_attributes/fiscal_address"
 require "nominal/invoice_attributes/issued_address"
+require "nominal/invoice_attributes/tax"
+require "nominal/invoice_attributes/withholding"
+require "nominal/invoice_attributes/transfer"
 
 #Resources
 require "nominal/error"

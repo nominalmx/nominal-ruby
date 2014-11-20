@@ -17,7 +17,7 @@ module Nominal
               #Check
               self.invoice_issuer.to_xml(xml)
 
-
+              #Check
               self.invoice_receptor.to_xml(xml)
 
               #Check

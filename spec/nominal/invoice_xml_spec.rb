@@ -114,4 +114,25 @@ describe Nominal::Invoice do
 
   end
 
+  describe Nominal::InvoiceAttributes::Tax do
+
+    subject(:tax) { Nominal::InvoiceAttributes::Tax.new({total_taxes_transferred: 2.560000}) }
+
+    it "can be XML marshalled" do
+
+      builder = Nokogiri::XML::Builder.new do |xml|
+        xml.Comprobante do
+          xml.doc.root.namespace = xml.doc.root.add_namespace_definition('cfdi', 'http://www.sat.gob.mx/cfd/3')
+          tax.to_xml(xml)
+        end
+      end
+
+      xml = builder.to_xml
+
+      expect(xml).to eq("<?xml version=\"1.0\"?>\n<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\">\n  <cfdi:Impuestos totalImpuestosTrasladados=\"0.26E1\"/>\n</cfdi:Comprobante>\n")
+
+    end
+
+  end
+
 end
