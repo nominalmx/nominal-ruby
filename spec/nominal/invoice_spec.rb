@@ -8,13 +8,10 @@ describe Nominal::Invoice do
   Nominal.api_base = "http://private-6edbb-nominal.apiary-mock.com"
 
   describe "#find" do
-    it "returns specific invoice" do
-
-      invoice = Nominal::Invoice.new("1")
-
-      p invoice
-
-    end
+    it "returns a specific invoice" do
+      invoice = Nominal::Invoice.find("e5a4ca14f37c1eaf8147b6b9")
+      expect(invoice.id).to eq("e5a4ca14f37c1eaf8147b6b9")
+     end
   end
 
 end

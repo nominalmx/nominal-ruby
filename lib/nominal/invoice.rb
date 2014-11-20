@@ -1,4 +1,5 @@
 module Nominal
+
   class Invoice < Resource
     include Nominal::Operations::Find
 
@@ -23,4 +24,5 @@ module Nominal
     end
 
   end
+
 end
