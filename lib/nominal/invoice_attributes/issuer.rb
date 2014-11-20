@@ -1,7 +1,7 @@
 module Nominal
   module InvoiceAttributes
 
-    class InvoiceIssuer
+    class Issuer
       include Properties
 
       has_properties :rfc,

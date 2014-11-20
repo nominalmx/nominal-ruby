@@ -16,9 +16,9 @@ require "nominal/operations/find"
 #Invoice XML Attributes
 require "nominal/invoice_attributes/properties"
 require "nominal/invoice_attributes/concept"
-require "nominal/invoice_attributes/invoice_issuer"
-require "nominal/invoice_attributes/invoice_fiscal_address"
-require "nominal/invoice_attributes/invoice_issued_address"
+require "nominal/invoice_attributes/issuer"
+require "nominal/invoice_attributes/fiscal_address"
+require "nominal/invoice_attributes/issued_address"
 
 #Resources
 require "nominal/error"

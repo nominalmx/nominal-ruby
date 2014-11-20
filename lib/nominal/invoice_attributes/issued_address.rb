@@ -1,10 +1,9 @@
 module Nominal
   module InvoiceAttributes
 
-    class InvoiceFiscalAddress
-      include Properties
+    class IssuedAddress
 
-      has_properties :country,
+      attr_accessor :country,
                     :street,
                     :municipality,
                     :state,
@@ -14,6 +13,30 @@ module Nominal
                     :locality,
                     :reference,
                     :postal_code
+
+      def initialize(country,
+                     street,
+                     municipality,
+                     state,
+                     exterior_number,
+                     interior_number,
+                     neighborhood,
+                     locality,
+                     reference,
+                     postal_code)
+
+        @country = country
+        @street = street
+        @municipality = municipality
+        @state = state
+        @exterior_number = exterior_number
+        @interior_number = interior_number
+        @neighborhood = neighborhood
+        @locality = locality
+        @reference = reference
+        @postal_code = postal_code
+
+      end
 
       def to_xml(xml)
         address_attr = {}
@@ -28,7 +51,7 @@ module Nominal
         address_attr[:referencia] = self.reference unless self.reference.nil?
         address_attr[:codigoPostal] = self.postal_code unless self.postal_code.nil?
 
-        xml.DomicilioFiscal(address_attr)
+        xml.ExpedidoEn(address_attr)
 
         xml
 

@@ -14,7 +14,10 @@ module Nominal
 
               xml.doc.root.namespace = xml.doc.root.add_namespace_definition('cfdi', 'http://www.sat.gob.mx/cfd/3')
 
-              self.invoice_issuer.to_invoice_xml(xml, self.fiscal_regime, self.invoice_fiscal_address, self.invoice_issued_address)
+              #Check
+              self.invoice_issuer.to_xml(xml)
+
+
               self.invoice_receptor.to_invoice_xml(xml, invoice_address)
 
               #Check

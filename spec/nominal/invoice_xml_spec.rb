@@ -27,11 +27,11 @@ describe Nominal::Invoice do
 
   end
 
-  describe Nominal::InvoiceAttributes::InvoiceIssuer do
+  describe Nominal::InvoiceAttributes::Issuer do
 
     subject(:issuer) do
 
-      fiscal_address = Nominal::InvoiceAttributes::InvoiceFiscalAddress.new({
+      fiscal_address = Nominal::InvoiceAttributes::FiscalAddress.new({
                                                                                 street: "GABRIEL TEPEPA",
                                                                                 exterior_number: "19",
                                                                                 neighborhood: "COLORINES",
@@ -43,7 +43,7 @@ describe Nominal::Invoice do
                                                                             })
 
 
-      issuer = Nominal::InvoiceAttributes::InvoiceIssuer.new({
+      issuer = Nominal::InvoiceAttributes::Issuer.new({
                                                                  rfc: "AAD990814BP7",
                                                                  name: "Empresa de Victor",
                                                                  fiscal_regime: 0,
@@ -65,7 +65,7 @@ describe Nominal::Invoice do
 
       xml = builder.to_xml
 
-      expect(xml).to eq("<?xml version=\"1.0\"?>\n<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\">\n  <cfdi:Emisor rfc=\"AAD990814BP7\" nombre=\"Chido\">\n    <cfdi:DomicilioFiscal pais=\"M&#xE9;xico\" calle=\"GABRIEL TEPEPA\" municipio=\"Morelos\" noExterior=\"19\" colonia=\"COLORINES\" localidad=\"Cuautla\" codigoPostal=\"64743\"/>\n    <cfdi:RegimenFiscal Regimen=\"0\"/>\n  </cfdi:Emisor>\n</cfdi:Comprobante>\n")
+      expect(xml).to eq("<?xml version=\"1.0\"?>\n<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\">\n  <cfdi:Emisor rfc=\"AAD990814BP7\" nombre=\"Empresa de Victor\">\n    <cfdi:DomicilioFiscal pais=\"M&#xE9;xico\" calle=\"GABRIEL TEPEPA\" municipio=\"Morelos\" noExterior=\"19\" colonia=\"COLORINES\" localidad=\"Cuautla\" codigoPostal=\"64743\"/>\n    <cfdi:RegimenFiscal Regimen=\"0\"/>\n  </cfdi:Emisor>\n</cfdi:Comprobante>\n")
 
     end
 
