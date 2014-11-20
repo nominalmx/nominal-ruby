@@ -32,6 +32,10 @@ module Nominal
       JSON.pretty_generate(@values)
     end
 
+    def class_name
+      self.class.name.split('::')[-1]
+    end
+
     def inspect
       id_string = (self.respond_to?(:id) && !self.id.nil?) ? " id=#{self.id}" : ""
       "#<#{self.class}:0x#{self.object_id.to_s(16)}#{id_string}> JSON: " + JSON.pretty_generate(@values)
@@ -56,7 +60,7 @@ module Nominal
         @unsaved_values.delete(k)
       end
       values.each do |k, v|
-        @values[k] = Util.convert_to_nominal_object(v, api_key)
+        @values[k] = Util.convert_to_nominal_object(v, class_name)
         @transient_values.delete(k)
         @unsaved_values.delete(k)
       end
@@ -100,7 +104,7 @@ module Nominal
     end
 
     def _dump(level)
-      Marshal.dump([@values, @api_key])
+      Marshal.dump([@values])
     end
 
     def self._load(args)
