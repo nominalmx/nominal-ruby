@@ -1,5 +1,6 @@
-require 'bundler/setup'
+require 'bundler'
 Bundler.setup(:default, :development)
+Bundler.require
 
 require 'nominal'
 
