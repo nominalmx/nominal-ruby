@@ -2,11 +2,19 @@
 # API spec at https://www.nominal.mx/docs/api
 require "json"
 
+require "nokogiri"
+
 #Version
 require "nominal/version"
 
+#XML Marshallers
+require "nominal/serializers/xml_serializer"
+
 #API Operations
 require "nominal/operations/find"
+
+#Invoice XML Attributes
+require "nominal/attributes"
 
 #Resources
 require "nominal/error"
@@ -15,6 +23,7 @@ require "nominal/resource"
 require "nominal/requestor"
 require "nominal/invoice"
 require "nominal/util"
+require "nominal/money_utils"
 
 module Nominal
 

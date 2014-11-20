@@ -2,6 +2,7 @@ module Nominal
 
   class Invoice < Resource
     include Nominal::Operations::Find
+    include Nominal::Serializers::InvoiceXML
 
     def self.class_name
       self.name.split('::')[-1]
