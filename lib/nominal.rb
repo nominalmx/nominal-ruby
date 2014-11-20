@@ -9,9 +9,11 @@ require "nominal/version"
 require "nominal/operations/find"
 
 #Resources
+require "nominal/error"
 require "nominal/nominal_object"
 require "nominal/resource"
 require "nominal/requestor"
+require "nominal/invoice"
 require "nominal/util"
 
 module Nominal
