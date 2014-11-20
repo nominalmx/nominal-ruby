@@ -32,7 +32,7 @@ module Nominal
         end
 
         conn.headers['Authorization'] = get_token
-        conn.headers['x-nominal-time'] = self.time
+        conn.headers['x-nominal-time'] = self.time.to_s
         conn.headers['Accept'] = MIME::Types['application/json']
         conn.headers['Content-Type'] = MIME::Types['application/json']
 
