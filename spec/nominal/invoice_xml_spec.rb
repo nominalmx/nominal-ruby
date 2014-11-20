@@ -50,8 +50,6 @@ describe Nominal::Invoice do
                                                                  fiscal_address: fiscal_address
                                                              })
 
-      issuer.name = "Chido"
-
       issuer
 
     end
@@ -66,7 +64,8 @@ describe Nominal::Invoice do
       end
 
       xml = builder.to_xml
-      p xml.inspect
+
+      expect(xml).to eq("<?xml version=\"1.0\"?>\n<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\">\n  <cfdi:Emisor rfc=\"AAD990814BP7\" nombre=\"Chido\">\n    <cfdi:DomicilioFiscal pais=\"M&#xE9;xico\" calle=\"GABRIEL TEPEPA\" municipio=\"Morelos\" noExterior=\"19\" colonia=\"COLORINES\" localidad=\"Cuautla\" codigoPostal=\"64743\"/>\n    <cfdi:RegimenFiscal Regimen=\"0\"/>\n  </cfdi:Emisor>\n</cfdi:Comprobante>\n")
 
     end
 
