@@ -30,4 +30,20 @@ module Nominal
     @api_key = api_key
   end
 
+  def self.private_api_key
+    @private_api_key
+  end
+
+  def self.private_api_key=(private_api_key)
+    @private_api_key = private_api_key
+  end
+
+  def self.public_api_key
+    @public_api_key
+  end
+
+  def self.public_api_key=(public_api_key)
+    @public_api_key = public_api_key
+  end
+
 end

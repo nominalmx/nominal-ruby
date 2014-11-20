@@ -6,12 +6,10 @@ module Nominal
 
   class Requestor
 
-    attr_reader :api_key
     attr_reader :private_api_key
     attr_reader :public_api_key
 
     def initialize
-      @api_key = Nominal.api_key
       @private_api_key = Nominal.private_api_key
       @public_api_key = Nominal.public_api_key
     end
@@ -32,7 +30,7 @@ module Nominal
         end
 
         conn.headers['Authorization'] = get_token
-        conn.headers['x-nominal-time'] = time
+        conn.headers['x-nominal-time'] = Time.now.utc
         conn.headers['Accept'] = MIME::Types['application/json']
         conn.headers['Content-Type'] = MIME::Types['application/json']
 
