@@ -1,101 +1,184 @@
 module Nominal
-  class NominalObject < Hash
+  class NominalObject
+    include Enumerable
 
-    attr_reader :id
-    attr_reader :values
+    @@permanent_attributes = Set.new([:id])
 
     def initialize(id=nil)
-      @values = Hash.new
-      @id = id.to_s
-    end
 
-    def set_val(k,v)
-      @values[k] = v
-    end
-
-    def unset_key(k)
-      @values.delete(k)
-    end
-
-    def first
-      self[0]
-    end
-
-    def last
-      self[self.count - 1]
-    end
-
-    def load_from(response)
-      if response.instance_of?(Array)
-        response.each_with_index do |v, i|
-          load_from_enumerable(i,v)
-        end
-      elsif response.kind_of?(Hash)
-        response = response.to_hash if response.class != Hash
-        response.each do |k,v|
-          load_from_enumerable(k,v)
-        end
+      # parameter overloading!
+      if id.kind_of?(Hash)
+        @retrieve_options = id.dup
+        @retrieve_options.delete(:id)
+        id = id[:id]
+      else
+        @retrieve_options = {}
       end
+
+      @values = Hash.new
+      # This really belongs in APIResource, but not putting it there allows us
+      # to have a unified inspect method
+      @unsaved_values = Set.new
+      @transient_values = Set.new
+      @values[:id] = id if id
+
     end
 
-    def to_s
-      @values.inspect
+    def self.construct_from(values)
+      self.new(values[:id]).refresh_from(values)
+    end
+
+    def to_s(*args)
+      JSON.pretty_generate(@values)
     end
 
     def inspect
-      if self.respond_to? :each
-        if self.class.class_name != "ConektaObject"
-          self.to_s
-        else
-          self.to_a.map{|x| x[1] }
-        end
-      else
-        super
+      id_string = (self.respond_to?(:id) && !self.id.nil?) ? " id=#{self.id}" : ""
+      "#<#{self.class}:0x#{self.object_id.to_s(16)}#{id_string}> JSON: " + JSON.pretty_generate(@values)
+    end
+
+    def refresh_from(values, partial=false)
+
+      @previous_metadata = values[:metadata]
+      removed = partial ? Set.new : Set.new(@values.keys - values.keys)
+      added = Set.new(values.keys - @values.keys)
+      # Wipe old state before setting new.  This is useful for e.g. updating a
+      # customer, where there is no persistent card parameter.  Mark those values
+      # which don't persist as transient
+
+      instance_eval do
+        remove_accessors(removed)
+        add_accessors(added)
+      end
+      removed.each do |k|
+        @values.delete(k)
+        @transient_values.add(k)
+        @unsaved_values.delete(k)
+      end
+      values.each do |k, v|
+        @values[k] = Util.convert_to_nominal_object(v, api_key)
+        @transient_values.delete(k)
+        @unsaved_values.delete(k)
+      end
+
+      return self
+    end
+
+    def [](k)
+      @values[k.to_sym]
+    end
+
+    def []=(k, v)
+      send(:"#{k}=", v)
+    end
+
+    def keys
+      @values.keys
+    end
+
+    def values
+      @values.values
+    end
+
+    def to_json(*a)
+      JSON.generate(@values)
+    end
+
+    def as_json(*a)
+      @values.as_json(*a)
+    end
+
+    def to_hash
+      @values.inject({}) do |acc, (key, value)|
+        acc[key] = value.respond_to?(:to_hash) ? value.to_hash : value
+        acc
       end
     end
 
-    def self.class_name
-      self.name.split('::')[-1]
+    def each(&blk)
+      @values.each(&blk)
     end
 
-    def class_name
-      self.class.name.split('::')[-1]
+    def _dump(level)
+      Marshal.dump([@values, @api_key])
     end
 
-    def create_attr(k,v)
-      create_method( "#{k}=".to_sym ) { |val|
-        instance_variable_set( "@" + k, val)
-      }
-      self.send("#{k}=".to_sym, v)
-      self.class.send(:remove_method, "#{k}=".to_sym)
-      create_method( k.to_sym ) {
-        instance_variable_get( "@" + k )
-      }
+    def self._load(args)
+      values = Marshal.load(args)
+      construct_from(values)
+    end
+
+    if RUBY_VERSION < '1.9.2'
+      def respond_to?(symbol)
+        @values.has_key?(symbol) || super
+      end
     end
 
     protected
-    def to_hash
-      hash = Hash.new
-      self.values.each do |k,v|
-        hash[k] = v
-      end
-      hash
+
+    def metaclass
+      class << self; self; end
     end
 
-    def create_method( name, &block )
-      self.class.send( :define_method, name, &block )
+    def remove_accessors(keys)
+      metaclass.instance_eval do
+        keys.each do |k|
+          next if @@permanent_attributes.include?(k)
+          k_eq = :"#{k}="
+          remove_method(k) if method_defined?(k)
+          remove_method(k_eq) if method_defined?(k_eq)
+        end
+      end
     end
 
-    def load_from_enumerable(k,v)
-      if v.respond_to? :each and !v.instance_of?(ConektaObject)
-        v = Conekta::Util.convert_to_conekta_object(k,v)
+    def add_accessors(keys)
+      metaclass.instance_eval do
+        keys.each do |k|
+          next if @@permanent_attributes.include?(k)
+          k_eq = :"#{k}="
+          define_method(k) { @values[k] }
+          define_method(k_eq) do |v|
+            if v == ""
+              raise ArgumentError.new(
+                        "You cannot set #{k} to an empty string." +
+                            "We interpret empty strings as nil in requests." +
+                            "You may set #{self}.#{k} = nil to delete the property.")
+            end
+            @values[k] = v
+            @unsaved_values.add(k)
+          end
+        end
       end
-      if self.instance_of?(ConektaObject)
-        self[k] = v
+    end
+
+    def method_missing(name, *args)
+      # TODO: only allow setting in updateable classes.
+      if name.to_s.end_with?('=')
+        attr = name.to_s[0...-1].to_sym
+        add_accessors([attr])
+        begin
+          mth = method(name)
+        rescue NameError
+          raise NoMethodError.new("Cannot set #{attr} on this object. HINT: you can't set: #{@@permanent_attributes.to_a.join(', ')}", "NominalObject")
+        end
+        return mth.call(args[0])
       else
-        self.create_attr(k,v)
+        return @values[name] if @values.has_key?(name)
       end
-      self.set_val(k,v)
+
+      begin
+        super
+      rescue NoMethodError => e
+        if @transient_values.include?(name)
+          raise NoMethodError.new(e.message + ".  HINT: The '#{name}' attribute was set in the past, however.  It was then wiped when refreshing the object with the result returned by Stripe's API, probably as a result of a save().  The attributes currently available on this object are: #{@values.keys.join(', ')}", "NominalObject")
+        else
+          raise
+        end
+      end
+    end
+
+    def respond_to_missing?(symbol, include_private = false)
+      @values && @values.has_key?(symbol) || super
     end
 
   end

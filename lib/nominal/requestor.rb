@@ -8,10 +8,12 @@ module Nominal
 
     attr_reader :private_api_key
     attr_reader :public_api_key
+    attr_reader :time
 
     def initialize
       @private_api_key = Nominal.private_api_key
       @public_api_key = Nominal.public_api_key
+      @time = Time.now.utc
     end
 
     def api_url(url='')
@@ -30,7 +32,7 @@ module Nominal
         end
 
         conn.headers['Authorization'] = get_token
-        conn.headers['x-nominal-time'] = Time.now.utc
+        conn.headers['x-nominal-time'] = self.time
         conn.headers['Accept'] = MIME::Types['application/json']
         conn.headers['Content-Type'] = MIME::Types['application/json']
 

@@ -1,5 +1,18 @@
+# Nominal Ruby bindings
+# API spec at https://www.nominal.mx/docs/api
 require "json"
+
+#Version
 require "nominal/version"
+
+#API Operations
+require "nominal/operations/find"
+
+#Resources
+require "nominal/nominal_object"
+require "nominal/resource"
+require "nominal/requestor"
+require "nominal/util"
 
 module Nominal
 
