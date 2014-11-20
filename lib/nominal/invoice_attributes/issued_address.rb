@@ -2,8 +2,9 @@ module Nominal
   module InvoiceAttributes
 
     class IssuedAddress
+        include Properties
 
-      attr_accessor :country,
+        has_properties :country,
                     :street,
                     :municipality,
                     :state,
@@ -13,30 +14,6 @@ module Nominal
                     :locality,
                     :reference,
                     :postal_code
-
-      def initialize(country,
-                     street,
-                     municipality,
-                     state,
-                     exterior_number,
-                     interior_number,
-                     neighborhood,
-                     locality,
-                     reference,
-                     postal_code)
-
-        @country = country
-        @street = street
-        @municipality = municipality
-        @state = state
-        @exterior_number = exterior_number
-        @interior_number = interior_number
-        @neighborhood = neighborhood
-        @locality = locality
-        @reference = reference
-        @postal_code = postal_code
-
-      end
 
       def to_xml(xml)
         address_attr = {}
