@@ -1,26 +1,14 @@
 module Nominal
-  module Attributes
-
+  module InvoiceAttributes
     class Concept
+      include Properties
 
-      attr_accessor :quantity,
+      has_properties :quantity,
                     :unit,
                     :description,
                     :unit_value,
                     :amount,
                     :identification_number
-
-
-      def initialize(quantity, unit, description, unit_value, amount, identification_number = nil)
-
-        @quantity = quantity
-        @unit = unit
-        @description = description
-        @unit_value = unit_value
-        @amount = amount
-        @identification_number = identification_number
-
-      end
 
       def to_xml(xml, precision = 2)
 
@@ -45,6 +33,5 @@ module Nominal
       end
 
     end
-
   end
 end

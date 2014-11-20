@@ -14,7 +14,11 @@ require "nominal/serializers/xml_serializer"
 require "nominal/operations/find"
 
 #Invoice XML Attributes
-require "nominal/attributes"
+require "nominal/invoice_attributes/properties"
+require "nominal/invoice_attributes/concept"
+require "nominal/invoice_attributes/invoice_issuer"
+require "nominal/invoice_attributes/invoice_fiscal_address"
+require "nominal/invoice_attributes/invoice_issued_address"
 
 #Resources
 require "nominal/error"

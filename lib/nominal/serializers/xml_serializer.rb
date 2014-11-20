@@ -17,13 +17,14 @@ module Nominal
               self.invoice_issuer.to_invoice_xml(xml, self.fiscal_regime, self.invoice_fiscal_address, self.invoice_issued_address)
               self.invoice_receptor.to_invoice_xml(xml, invoice_address)
 
+              #Check
               xml.Conceptos() {
                 self.concepts.each { |concept| concept.to_invoice_xml(xml, self.precision) }
               }
 
               self.tax.to_invoice_xml(xml, self.precision)
 
-              if !self.payroll.nil?
+              unless self.payroll.nil?
                 xml.Complemento() {
                   self.payroll.to_invoice_xml(xml, self.precision)
                 }
@@ -59,18 +60,18 @@ module Nominal
           invoice_attr[:tipoDeComprobante] = self.voucher_type_text.downcase
           invoice_attr[:LugarExpedicion] = self.expedition_place
 
-          invoice_attr[:serie] = self.serie if !self.serie.nil?
-          invoice_attr[:folio] = self.folio if !self.folio.nil?
-          invoice_attr[:condicionesDePago] = self.payment_terms if !self.payment_terms.nil?
-          invoice_attr[:descuento] = number_to_rounded_precision(self.discount, self.precision) if !self.discount.nil?
-          invoice_attr[:motivoDescuento] = self.discount_reason if !self.discount_reason.nil?
-          invoice_attr[:TipoCambio] = self.exchange_rate if !self.exchange_rate.nil?
-          invoice_attr[:Moneda] = self.currency if !self.currency.nil?
-          invoice_attr[:NumCtaPago] = self.payment_account_number if !self.payment_account_number.nil?
-          invoice_attr[:FolioFiscalOrig] = self.orig_fiscal_folio if !self.orig_fiscal_folio.nil?
-          invoice_attr[:SerieFolioFiscalOrig] = self.orig_fiscal_folio_serie if !self.orig_fiscal_folio_serie.nil?
-          invoice_attr[:FechaFolioFiscalOrig] = self.orig_fiscal_folio_date if !self.orig_fiscal_folio_date.nil?
-          invoice_attr[:MontoFolioFiscalOrig] = self.orig_fiscal_folio_amount if !self.orig_fiscal_folio_amount.nil?
+          invoice_attr[:serie] = self.serie unless self.serie.nil?
+          invoice_attr[:folio] = self.folio unless self.folio.nil?
+          invoice_attr[:condicionesDePago] = self.payment_terms unless self.payment_terms.nil?
+          invoice_attr[:descuento] = number_to_rounded_precision(self.discount, self.precision) unless self.discount.nil?
+          invoice_attr[:motivoDescuento] = self.discount_reason unless self.discount_reason.nil?
+          invoice_attr[:TipoCambio] = self.exchange_rate unless self.exchange_rate.nil?
+          invoice_attr[:Moneda] = self.currency unless self.currency.nil?
+          invoice_attr[:NumCtaPago] = self.payment_account_number unless self.payment_account_number.nil?
+          invoice_attr[:FolioFiscalOrig] = self.orig_fiscal_folio unless self.orig_fiscal_folio.nil?
+          invoice_attr[:SerieFolioFiscalOrig] = self.orig_fiscal_folio_serie unless self.orig_fiscal_folio_serie.nil?
+          invoice_attr[:FechaFolioFiscalOrig] = self.orig_fiscal_folio_date unless self.orig_fiscal_folio_date.nil?
+          invoice_attr[:MontoFolioFiscalOrig] = self.orig_fiscal_folio_amount unless self.orig_fiscal_folio_amount.nil?
 
           invoice_attr
 
