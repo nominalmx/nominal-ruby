@@ -17,6 +17,7 @@ require "nominal/operations/find"
 require "nominal/invoice_attributes/properties"
 require "nominal/invoice_attributes/concept"
 require "nominal/invoice_attributes/issuer"
+require "nominal/invoice_attributes/receptor"
 require "nominal/invoice_attributes/fiscal_address"
 require "nominal/invoice_attributes/issued_address"
 

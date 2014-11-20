@@ -18,7 +18,7 @@ module Nominal
               self.invoice_issuer.to_xml(xml)
 
 
-              self.invoice_receptor.to_invoice_xml(xml, invoice_address)
+              self.invoice_receptor.to_xml(xml)
 
               #Check
               xml.Conceptos() {
