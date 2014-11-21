@@ -24,6 +24,13 @@ require "nominal/invoice_attributes/tax"
 require "nominal/invoice_attributes/withholding"
 require "nominal/invoice_attributes/transfer"
 
+#Payroll
+require "nominal/invoice_attributes/payroll"
+require "nominal/invoice_attributes/deductions"
+require "nominal/invoice_attributes/perceptions"
+require "nominal/invoice_attributes/incapacity"
+require "nominal/invoice_attributes/overtime"
+
 #Resources
 require "nominal/error"
 require "nominal/nominal_object"

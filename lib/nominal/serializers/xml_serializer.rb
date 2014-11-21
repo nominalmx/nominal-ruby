@@ -25,11 +25,12 @@ module Nominal
                 self.concepts.each { |concept| concept.to_invoice_xml(xml, self.precision) }
               }
 
-              self.tax.to_invoice_xml(xml, self.precision)
+              #Check
+              self.tax.to_xml(xml, self.precision)
 
               unless self.payroll.nil?
                 xml.Complemento() {
-                  self.payroll.to_invoice_xml(xml, self.precision)
+                  self.payroll.to_xml(xml, self.precision)
                 }
               end
 
