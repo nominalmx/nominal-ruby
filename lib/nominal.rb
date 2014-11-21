@@ -9,6 +9,7 @@ require "nominal/version"
 
 #API Operations
 require "nominal/operations/find"
+require "nominal/operations/custom_action"
 
 #Invoice utils
 require "nominal/invoice_utils/certificate"

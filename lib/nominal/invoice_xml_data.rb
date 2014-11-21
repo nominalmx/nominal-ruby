@@ -42,7 +42,7 @@ module Nominal
 
       invoice_attr = generate_attributes
 
-      builder = Nokogiri::XML::Builder.new do |xml|
+      builder = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
         xml.Comprobante(invoice_attr) do
 
           xml.doc.root.namespace = xml.doc.root.add_namespace_definition('cfdi', 'http://www.sat.gob.mx/cfd/3')
