@@ -23,6 +23,10 @@ module Nominal
       "#{self.class.url}/#{CGI.escape(id)}"
     end
 
+    def stamp_xml(xml)
+      self.xml = xml
+    end
+
   end
 
 end
