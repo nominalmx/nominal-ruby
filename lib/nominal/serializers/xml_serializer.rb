@@ -3,7 +3,40 @@ module Nominal
     module InvoiceXML
       module ClassMethods
 
-        attr_accessor :concepts
+        #Invoice attr
+        has_properties :expedition_date,
+                       :seal,
+                       :payment_form,
+                       :certificate_number,
+                       :certificate_data,
+                       :subtotal,
+                       :total,
+                       :payment_method,
+                       :voucher_type_text,
+                       :expedition_place,
+                       :serie,
+                       :folio,
+                       :payment_terms,
+                       :discount,
+                       :discount_reason,
+                       :exchange_rate,
+                       :currency,
+                       :payment_account_number,
+                       :orig_fiscal_folio,
+                       :orig_fiscal_folio_serie,
+                       :orig_fiscal_folio_date,
+                       :orig_fiscal_folio_amount,
+
+                       #Nodes
+                       :invoice_issuer,
+                       :invoice_receptor,
+                       :concepts,
+                       :tax,
+
+                       #Complementos
+                       :payroll,
+                       :donee
+
 
         def to_xml
 
@@ -15,18 +48,20 @@ module Nominal
               xml.doc.root.namespace = xml.doc.root.add_namespace_definition('cfdi', 'http://www.sat.gob.mx/cfd/3')
 
               #Check
-              self.invoice_issuer.to_xml(xml)
+              self.invoice_issuer.to_xml(xml) unless self.invoice_issuer.nil?
 
               #Check
-              self.invoice_receptor.to_xml(xml)
+              self.invoice_receptor.to_xml(xml) unless self.invoice_receptor.nil?
 
               #Check
-              xml.Conceptos() {
-                self.concepts.each { |concept| concept.to_invoice_xml(xml, self.precision) }
-              }
+              if Util.is_not_empty_array? self.concepts
+                xml.Conceptos() {
+                  self.concepts.each { |concept| concept.to_xml(xml, self.precision) }
+                }
+              end
 
               #Check
-              self.tax.to_xml(xml, self.precision)
+              self.tax.to_xml(xml, self.precision) unless self.tax.nil?
 
               #Check
               unless self.payroll.nil?
@@ -38,7 +73,7 @@ module Nominal
               #Check
               unless self.donee.nil?
                 xml.Complemento() {
-                  self.donee.to_invoice_xml(xml)
+                  self.donee.to_xml(xml)
                 }
               end
 
@@ -61,8 +96,8 @@ module Nominal
           invoice_attr[:formaDePago] = self.payment_form
           invoice_attr[:noCertificado] = self.certificate_number
           invoice_attr[:certificado] = self.certificate_data
-          invoice_attr[:subTotal] = number_to_rounded_precision(self.subtotal, self.precision)
-          invoice_attr[:total] = number_to_rounded_precision(self.total, self.precision)
+          invoice_attr[:subTotal] = MoneyUtils.number_to_rounded_precision(self.subtotal, self.precision)
+          invoice_attr[:total] = MoneyUtils.number_to_rounded_precision(self.total, self.precision)
           invoice_attr[:metodoDePago] = self.payment_method
           invoice_attr[:tipoDeComprobante] = self.voucher_type_text.downcase
           invoice_attr[:LugarExpedicion] = self.expedition_place
@@ -70,7 +105,7 @@ module Nominal
           invoice_attr[:serie] = self.serie unless self.serie.nil?
           invoice_attr[:folio] = self.folio unless self.folio.nil?
           invoice_attr[:condicionesDePago] = self.payment_terms unless self.payment_terms.nil?
-          invoice_attr[:descuento] = number_to_rounded_precision(self.discount, self.precision) unless self.discount.nil?
+          invoice_attr[:descuento] = MoneyUtils.number_to_rounded_precision(self.discount, self.precision) unless self.discount.nil?
           invoice_attr[:motivoDescuento] = self.discount_reason unless self.discount_reason.nil?
           invoice_attr[:TipoCambio] = self.exchange_rate unless self.exchange_rate.nil?
           invoice_attr[:Moneda] = self.currency unless self.currency.nil?

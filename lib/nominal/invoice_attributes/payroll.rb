@@ -23,6 +23,8 @@ module Nominal
                      :base_salary,
                      :job_risk,
                      :integrated_daily_wage,
+
+                     #Children nodes
                      :perceptions,
                      :deductions,
                      :incapacities,
@@ -36,26 +38,22 @@ module Nominal
         xml['nomina'].Nomina(payroll_attr) do
 
           #Check
-          self.perceptions.to_invoice_xml(xml, precision) unless self.perceptions.nil?
+          self.perceptions.to_xml(xml, precision) unless self.perceptions.nil?
 
           #Check
-          self.deductions.to_invoice_xml(xml, precision) unless self.deductions.nil?
+          self.deductions.to_xml(xml, precision) unless self.deductions.nil?
 
           #Check
-          unless self.incapacities.nil? or !self.incapacities.is_a? Array or self.incapacities.empty?
+          if Util.is_not_empty_array? self.incapacities
             xml.Incapacidades(){
-              self.incapacities.each do |incapacity|
-                incapacity.to_xml(xml, precision)
-              end
+              self.incapacities.each { |incapacity| incapacity.to_xml(xml, precision) }
             }
           end
 
           #Check
-          unless self.overtimes.nil? or !self.overtimes.is_a? Array or self.overtimes.empty?
+          if Util.is_not_empty_array? self.overtimes
             xml.HorasExtras(){
-              self.overtimes.each do |overtime|
-                overtime.to_xml(xml, precision)
-              end
+              self.incapacities.each { |overtime| overtime.to_xml(xml, precision) }
             }
           end
 
