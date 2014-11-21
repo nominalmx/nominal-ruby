@@ -25,3 +25,6 @@ config/secrets.yml
 
 #Ignoring RubyMine project
 .idea
+
+#Ignoring generated pem fixtures
+/spec/fixtures/*.key.pem
