@@ -13,9 +13,7 @@ module Nominal
         tax_attr = {}
 
         unless self.total_taxes_withheld.nil?
-          unless self.total_taxes_withheld.empty?
             tax_attr[:totalImpuestosRetenidos] = MoneyUtils.number_to_rounded_precision(self.total_taxes_withheld, precision)
-          end
         end
 
         unless self.total_taxes_transferred.nil?

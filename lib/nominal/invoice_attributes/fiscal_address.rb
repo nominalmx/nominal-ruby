@@ -16,6 +16,7 @@ module Nominal
                     :postal_code
 
       def to_xml(xml)
+
         address_attr = {}
         address_attr[:pais] = self.country unless self.country.nil?
         address_attr[:calle] = self.street unless self.street.nil?
@@ -28,7 +29,7 @@ module Nominal
         address_attr[:referencia] = self.reference unless self.reference.nil?
         address_attr[:codigoPostal] = self.postal_code unless self.postal_code.nil?
 
-        xml.DomicilioFiscal(address_attr)
+        xml.DomicilioFiscal(address_attr){}
 
         xml
 

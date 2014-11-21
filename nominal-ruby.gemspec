@@ -25,7 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "json"
   spec.add_development_dependency "mime-types"
   spec.add_development_dependency "nokogiri", "~> 1.6.2.1"
-  spec.add_development_dependency "actionview"
   spec.add_development_dependency "openssl_pkcs8"
 
 end
