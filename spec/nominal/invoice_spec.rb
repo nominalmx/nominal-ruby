@@ -36,6 +36,7 @@ describe Nominal::Invoice do
                                                                        locality: "Cuautla",
                                                                        municipality: "Cuautla",
                                                                        municipality: "Morelos",
+                                                                       state: "Morelos",
                                                                        country: "México",
                                                                        postal_code: "64743"
                                                                    })
@@ -48,23 +49,30 @@ describe Nominal::Invoice do
                                                     })
 
 
-    fiscal_address = Nominal::InvoiceAttributes::FiscalAddress.new({
-                                                                       street: "GABRIEL TEPEPA",
-                                                                       exterior_number: "19",
-                                                                       neighborhood: "COLORINES",
-                                                                       locality: "Cuautla",
-                                                                       municipality: "Cuautla",
-                                                                       municipality: "Morelos",
-                                                                       country: "México",
-                                                                       postal_code: "64743"
-                                                                   })
-
-
     receptor = Nominal::InvoiceAttributes::Receptor.new({
                                                             rfc: "AAD990814BP7",
                                                             name: "Empresa de Victor",
-                                                            receptor_address: fiscal_address
                                                         })
+
+    withholding = Nominal::InvoiceAttributes::Withholding.new({
+                                                                  tax_text: "IVA",
+                                                                  rate: 16.000000,
+                                                                  amount: 50.36
+                                                              })
+
+    tax = Nominal::InvoiceAttributes::Tax.new({
+                                                  total_taxes_withheld: 50.36,
+                                                  total_taxes_transferred: 0,
+                                                  withholdings: [withholding]
+                                              })
+
+    concept = Nominal::InvoiceAttributes::Concept.new({
+                                                          quantity: 4,
+                                                          unit: "N/A",
+                                                          description: "Juguete",
+                                                          unit_value: 16.00,
+                                                          amount: 4,
+                                                      })
 
 
     invoice_data = Nominal::InvoiceXmlData.new({
@@ -82,12 +90,13 @@ describe Nominal::Invoice do
                                                    api_reference: "ksdfkkasdfalsdfasdfl",
                                                    public_id: "0934039302440",
                                                    status: 2,
-                                                   voucher_type: 0,
-                                                   mode: 0,
+                                                   voucher_type_text: "egreso",
                                                    environment: 1,
                                                    fiscal_regime: "RÉGIMEN GENERAL DE LEY PERSONAS MORALES",
                                                    supplier: 1,
-                                                   precision: 2
+                                                   precision: 2,
+                                                   concepts: [concept],
+                                                   tax: tax
                                                })
 
     invoice_data
