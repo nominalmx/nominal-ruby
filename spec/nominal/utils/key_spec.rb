@@ -54,7 +54,6 @@ describe Nominal::InvoiceUtils::Certificate do
       end
     end
 
-
   end
 
 end
