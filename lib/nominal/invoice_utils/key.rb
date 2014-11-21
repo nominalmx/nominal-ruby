@@ -70,7 +70,7 @@ module Nominal
       #
       # @return El sello
       def seal xml
-        @cadena = Invoice::OriginalChain.invoice_original_chain_xslt.transform(Nokogiri::XML(xml))
+        @cadena = Nominal::InvoiceUtils::OriginalChain.invoice_original_chain_xslt.transform(Nokogiri::XML(xml))
         return Base64::encode64(self.sign(OpenSSL::Digest::SHA1.new, @cadena)).gsub(/\n/, '')
       end
 
