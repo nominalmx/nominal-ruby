@@ -41,7 +41,7 @@ module Nominal
         response = if body.nil?
                      conn.method(meth).call
                    else
-                     # post payload as JSON instead of "www-form-urlencoded" encoding:
+                     # post payload as JSON
                      json = JSON.generate(body)
                      conn.post { |req| req.body = json}
                    end

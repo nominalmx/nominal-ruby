@@ -1,7 +1,6 @@
 module Nominal
-    module MoneyUtils
 
-      require 'bigdecimal'
+    module MoneyUtils
 
       def self.number_to_rounded_precision(value, default_precision = nil)
         precision = money_precision(value, default_precision)
