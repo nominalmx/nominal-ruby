@@ -86,6 +86,22 @@ describe Nominal::InvoiceXmlData do
     expect(xml).to eq("<?xml version=\"1.0\"?>\n<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd\" version=\"3.2\" fecha=\"2014-07-10T00:00:00\" sello=\"\" formaDePago=\"PAGO EN UNA SOLA EXHIBICI&#xD3;N\" noCertificado=\"\" certificado=\"\" subTotal=\"0.16E2\" total=\"0.19E2\" metodoDePago=\"EFECTIVO\" LugarExpedicion=\"YUCAT&#xC1;N, M&#xC9;XICO\" folio=\"10\" Moneda=\"MXN\">\n  <cfdi:Emisor rfc=\"AAD990814BP7\" nombre=\"Empresa de Victor\">\n    <cfdi:DomicilioFiscal pais=\"M&#xE9;xico\" calle=\"GABRIEL TEPEPA\" municipio=\"Morelos\" noExterior=\"19\" colonia=\"COLORINES\" localidad=\"Cuautla\" codigoPostal=\"64743\"/>\n    <cfdi:RegimenFiscal Regimen=\"0\"/>\n  </cfdi:Emisor>\n  <cfdi:Receptor rfc=\"AAD990814BP7\" nombre=\"Empresa de Victor\">\n    <cfdi:DomicilioFiscal pais=\"M&#xE9;xico\" calle=\"GABRIEL TEPEPA\" municipio=\"Morelos\" noExterior=\"19\" colonia=\"COLORINES\" localidad=\"Cuautla\" codigoPostal=\"64743\"/>\n  </cfdi:Receptor>\n</cfdi:Comprobante>\n")
   end
 
+  it "can be validated" do
+
+    invoice_data.certificate_data = cert.data
+    invoice_data.certificate_number = cert.certificate_number
+    pre_sealed_xml = invoice_data.to_xml
+    invoice_data.seal = key.seal(pre_sealed_xml)
+    xml = invoice_data.to_xml.gsub(/\n/, '')
+
+    #errors = Nominal::InvoiceUtils::SchemaValidator.validate_xml xml
+
+    #errors.each { |error| p error.to_s }
+
+    #expect(errors).to be_empty
+
+  end
+
   it "can be sealed" do
 
     invoice_data.certificate_data = cert.data

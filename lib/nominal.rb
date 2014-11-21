@@ -15,6 +15,7 @@ require "nominal/operations/custom_action"
 require "nominal/invoice_utils/certificate"
 require "nominal/invoice_utils/key"
 require "nominal/invoice_utils/original_chain"
+require "nominal/invoice_utils/schema_validator"
 
 #Invoice XML Attributes
 require "nominal/invoice_attributes/properties"
