@@ -13,7 +13,7 @@ module Nominal
     def initialize
       @private_api_key = Nominal.private_api_key
       @public_api_key = Nominal.public_api_key
-      @time = Time.now.utc
+      @time = Time.now.utc.to_i
     end
 
     def api_url(url='')
@@ -21,13 +21,13 @@ module Nominal
       api_base + url
     end
 
-    def request(method, url, params=nil)
+    def request(method, url, params=nil, body=nil)
 
       url = self.api_url(url)
       meth = method.downcase
 
       begin
-        conn = Faraday.new( url: url ) do |faraday|
+        conn = Faraday.new(url: url) do |faraday|
           faraday.adapter Faraday.default_adapter
         end
 
@@ -36,11 +36,16 @@ module Nominal
         conn.headers['Accept'] = MIME::Types['application/json']
         conn.headers['Content-Type'] = MIME::Types['application/json']
 
-        if params
-          conn.params = params
-        end
+        conn.params = params unless params.nil?
 
-        response = conn.method(meth).call
+        response = if body.nil?
+                     conn.method(meth).call
+                   else
+                     # post payload as JSON
+                     json = JSON.generate(body)
+                     conn.post { |req| req.body = json}
+                   end
+
       rescue Exception => e
         Error.error_handler(e, "")
       end

@@ -42,7 +42,7 @@ module Nominal
 
       invoice_attr = generate_attributes
 
-      builder = Nokogiri::XML::Builder.new do |xml|
+      builder = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
         xml.Comprobante(invoice_attr) do
 
           xml.doc.root.namespace = xml.doc.root.add_namespace_definition('cfdi', 'http://www.sat.gob.mx/cfd/3')
@@ -54,11 +54,11 @@ module Nominal
           self.receptor.to_xml(xml) unless self.receptor.nil?
 
           #Check
-          if Util.is_not_empty_array? self.concepts
-            xml.Conceptos() {
+          xml.Conceptos() {
+            if Util.is_not_empty_array? self.concepts
               self.concepts.each { |concept| concept.to_xml(xml, self.precision) }
-            }
-          end
+            end
+          }
 
           #Check
           self.tax.to_xml(xml, self.precision) unless self.tax.nil?

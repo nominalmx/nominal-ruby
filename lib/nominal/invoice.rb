@@ -2,6 +2,7 @@ module Nominal
 
   class Invoice < Resource
     include Nominal::Operations::Find
+    include Nominal::Operations::CustomAction
 
     def self.class_name
       self.name.split('::')[-1]
@@ -23,8 +24,20 @@ module Nominal
       "#{self.class.url}/#{CGI.escape(id)}"
     end
 
-    def stamp_xml(xml)
-      self.xml = xml
+    def self.stamp_xml(data, cert, key)
+
+      data.certificate_data = cert.data
+      data.certificate_number = cert.certificate_number
+      pre_sealed_xml = data.to_xml
+      data.seal = key.seal(pre_sealed_xml)
+      xml = data.to_xml.gsub(/\n/, '')
+
+      body = { xml: Base64.encode64(xml) }
+
+      url = [self.url, 'stamp_xml'].join('/')
+      response = Requestor.new.request(:post, url, nil, body)
+      Util.convert_to_nominal_object(response, self.class_name)
+
     end
 
   end
