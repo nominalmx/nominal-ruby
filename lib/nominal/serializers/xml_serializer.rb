@@ -28,17 +28,20 @@ module Nominal
               #Check
               self.tax.to_xml(xml, self.precision)
 
+              #Check
               unless self.payroll.nil?
                 xml.Complemento() {
                   self.payroll.to_xml(xml, self.precision)
                 }
               end
 
+              #Check
               unless self.donee.nil?
                 xml.Complemento() {
                   self.donee.to_invoice_xml(xml)
                 }
               end
+
             end
           end
 

@@ -23,6 +23,7 @@ require "nominal/invoice_attributes/issued_address"
 require "nominal/invoice_attributes/tax"
 require "nominal/invoice_attributes/withholding"
 require "nominal/invoice_attributes/transfer"
+require "nominal/invoice_attributes/donee"
 
 #Payroll
 require "nominal/invoice_attributes/payroll"
