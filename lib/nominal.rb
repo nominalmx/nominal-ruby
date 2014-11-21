@@ -7,9 +7,6 @@ require "nokogiri"
 #Version
 require "nominal/version"
 
-#XML Marshallers
-require "nominal/serializers/xml_serializer"
-
 #API Operations
 require "nominal/operations/find"
 
@@ -31,6 +28,9 @@ require "nominal/invoice_attributes/deductions"
 require "nominal/invoice_attributes/perceptions"
 require "nominal/invoice_attributes/incapacity"
 require "nominal/invoice_attributes/overtime"
+
+#XML Marshallers
+require "nominal/invoice_xml_data"
 
 #Resources
 require "nominal/error"

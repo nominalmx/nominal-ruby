@@ -2,7 +2,6 @@ module Nominal
 
   class Invoice < Resource
     include Nominal::Operations::Find
-    include Nominal::Serializers::InvoiceXML
 
     def self.class_name
       self.name.split('::')[-1]
@@ -22,6 +21,10 @@ module Nominal
       end
 =end
       "#{self.class.url}/#{CGI.escape(id)}"
+    end
+
+    def stamp_xml(xml)
+      self.xml = xml
     end
 
   end

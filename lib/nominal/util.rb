@@ -20,13 +20,13 @@ module Nominal
       end
     end
 
-    def is_not_empty_array? object
+    def self.is_not_empty_array? object
 
       is_array = false
 
-      unless self.object.nil?
-        if self.object.is_a? Array
-          unless self.object.empty?
+      unless object.nil?
+        if object.is_a? Array
+          unless object.empty?
             is_array = true
           end
         end
