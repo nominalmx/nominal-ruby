@@ -29,6 +29,7 @@ GEM
     multipart-post (2.0.0)
     nokogiri (1.6.2.1)
       mini_portile (= 0.6.0)
+    openssl_pkcs8 (0.1.2)
     rake (10.3.2)
     rspec (3.0.0)
       rspec-core (~> 3.0.0)
@@ -57,5 +58,6 @@ DEPENDENCIES
   mime-types
   nokogiri (~> 1.6.2.1)
   nominal!
+  openssl_pkcs8
   rake
   rspec

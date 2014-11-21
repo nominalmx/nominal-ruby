@@ -10,6 +10,11 @@ require "nominal/version"
 #API Operations
 require "nominal/operations/find"
 
+#Invoice utils
+require "nominal/invoice_utils/certificate"
+require "nominal/invoice_utils/key"
+require "nominal/invoice_utils/original_chain"
+
 #Invoice XML Attributes
 require "nominal/invoice_attributes/properties"
 require "nominal/invoice_attributes/concept"
