@@ -23,6 +23,7 @@ describe Nominal::InvoiceXmlData do
                                                                        locality: "Cuautla",
                                                                        municipality: "Cuautla",
                                                                        municipality: "Morelos",
+                                                                       state: "Morelos",
                                                                        country: "México",
                                                                        postal_code: "64743"
                                                                    })
@@ -35,47 +36,55 @@ describe Nominal::InvoiceXmlData do
                                                     })
 
 
-    fiscal_address = Nominal::InvoiceAttributes::FiscalAddress.new({
-                                                                       street: "GABRIEL TEPEPA",
-                                                                       exterior_number: "19",
-                                                                       neighborhood: "COLORINES",
-                                                                       locality: "Cuautla",
-                                                                       municipality: "Cuautla",
-                                                                       municipality: "Morelos",
-                                                                       country: "México",
-                                                                       postal_code: "64743"
-                                                                   })
-
-
     receptor = Nominal::InvoiceAttributes::Receptor.new({
                                                             rfc: "AAD990814BP7",
                                                             name: "Empresa de Victor",
-                                                            receptor_address: fiscal_address
                                                         })
+
+    withholding = Nominal::InvoiceAttributes::Withholding.new({
+                                                                  tax_text: "IVA",
+                                                                  rate: 16.000000,
+                                                                  amount: 50.36
+                                                              })
+
+    tax = Nominal::InvoiceAttributes::Tax.new({
+                                                  total_taxes_withheld: 50.36,
+                                                  total_taxes_transferred: 0,
+                                                  withholdings: [withholding]
+                                              })
+
+    concept = Nominal::InvoiceAttributes::Concept.new({
+                                                          quantity: 4,
+                                                          unit: "N/A",
+                                                          description: "Juguete",
+                                                          unit_value: 16.00,
+                                                          amount: 4,
+                                                      })
 
 
     invoice_data = Nominal::InvoiceXmlData.new({
-                                    folio: 10,
-                                    expedition_date: Date.new(2014, 7, 10),
-                                    subtotal: 16.000000,
-                                    total: 18.5600000,
-                                    payment_form: "PAGO EN UNA SOLA EXHIBICIÓN",
-                                    payment_method: "EFECTIVO",
-                                    currency: "MXN",
-                                    expedition_place: "YUCATÁN, MÉXICO",
-                                    issuer: issuer,
-                                    receptor: receptor,
-                                    invoice_type: 0,
-                                    api_reference: "ksdfkkasdfalsdfasdfl",
-                                    public_id: "0934039302440",
-                                    status: 2,
-                                    voucher_type: 0,
-                                    mode: 0,
-                                    environment: 1,
-                                    fiscal_regime: "RÉGIMEN GENERAL DE LEY PERSONAS MORALES",
-                                    supplier: 1,
-                                    precision: 2
-                                })
+                                                   folio: 10,
+                                                   expedition_date: Date.new(2014, 7, 10),
+                                                   subtotal: 16.000000,
+                                                   total: 18.5600000,
+                                                   payment_form: "PAGO EN UNA SOLA EXHIBICIÓN",
+                                                   payment_method: "EFECTIVO",
+                                                   currency: "MXN",
+                                                   expedition_place: "YUCATÁN, MÉXICO",
+                                                   issuer: issuer,
+                                                   receptor: receptor,
+                                                   invoice_type: 0,
+                                                   api_reference: "ksdfkkasdfalsdfasdfl",
+                                                   public_id: "0934039302440",
+                                                   status: 2,
+                                                   voucher_type_text: "egreso",
+                                                   environment: 1,
+                                                   fiscal_regime: "RÉGIMEN GENERAL DE LEY PERSONAS MORALES",
+                                                   supplier: 1,
+                                                   precision: 2,
+                                                   concepts: [concept],
+                                                   tax: tax
+                                               })
 
     invoice_data
 
@@ -94,11 +103,12 @@ describe Nominal::InvoiceXmlData do
     invoice_data.seal = key.seal(pre_sealed_xml)
     xml = invoice_data.to_xml.gsub(/\n/, '')
 
-    #errors = Nominal::InvoiceUtils::SchemaValidator.validate_xml xml
+    errors = Nominal::InvoiceUtils::SchemaValidator.validate_xml xml
 
-    #errors.each { |error| p error.to_s }
+    expect(errors).to be_empty
 
-    #expect(errors).to be_empty
+    errors.each { |error| p error.to_s }
+
 
   end
 

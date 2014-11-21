@@ -54,11 +54,11 @@ module Nominal
           self.receptor.to_xml(xml) unless self.receptor.nil?
 
           #Check
-          if Util.is_not_empty_array? self.concepts
-            xml.Conceptos() {
+          xml.Conceptos() {
+            if Util.is_not_empty_array? self.concepts
               self.concepts.each { |concept| concept.to_xml(xml, self.precision) }
-            }
-          end
+            end
+          }
 
           #Check
           self.tax.to_xml(xml, self.precision) unless self.tax.nil?

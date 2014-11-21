@@ -1,6 +1,6 @@
 module Nominal
   module InvoiceAttributes
-    class Withholding
+    class Transfer
       include Properties
 
       has_properties :tax_text,

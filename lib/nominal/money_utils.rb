@@ -3,9 +3,10 @@ module Nominal
     module MoneyUtils
 
       def self.number_to_rounded_precision(value, default_precision = nil)
-        precision = money_precision(value, default_precision)
-        number = round_money(value, precision)
-        number
+        value
+        #precision = money_precision(value, default_precision)
+        #number = round_money(value, precision)
+        #number
       end
 
       private
