@@ -9,6 +9,7 @@ require "nominal/version"
 
 #API Operations
 require "nominal/operations/find"
+require "nominal/operations/create"
 require "nominal/operations/custom_action"
 
 #Invoice utils
@@ -45,6 +46,7 @@ require "nominal/nominal_object"
 require "nominal/resource"
 require "nominal/requestor"
 require "nominal/invoice"
+require "nominal/issuer"
 require "nominal/util"
 require "nominal/money_utils"
 
