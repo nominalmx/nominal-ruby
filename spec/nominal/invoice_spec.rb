@@ -119,8 +119,8 @@ describe Nominal::Invoice do
     Nominal.api_base = "http://api.nominal.dev:3000"
 
     it "create invoice stamping it" do
-      invoice = Nominal::Invoice.stamp_xml(invoice_data, cert, key)
-      p invoice.inspect
+      status = Nominal::Invoice.stamp_xml(invoice_data, cert, key)
+      p status.inspect
     end
 
   end
