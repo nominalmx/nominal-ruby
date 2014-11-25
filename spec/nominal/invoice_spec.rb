@@ -35,7 +35,6 @@ describe Nominal::Invoice do
                                                                        neighborhood: "COLORINES",
                                                                        locality: "Cuautla",
                                                                        municipality: "Cuautla",
-                                                                       municipality: "Morelos",
                                                                        state: "Morelos",
                                                                        country: "México",
                                                                        postal_code: "64743"
@@ -43,15 +42,26 @@ describe Nominal::Invoice do
 
     issuer = Nominal::InvoiceAttributes::Issuer.new({
                                                         rfc: "AAD990814BP7",
-                                                        name: "Empresa de Victor",
-                                                        fiscal_regime: 0,
+                                                        name: "MACRO CLIENT EMPRESA 2",
+                                                        fiscal_regime: "RÉGIMEN GENERAL DE LEY PERSONAS MORALES",
                                                         fiscal_address: fiscal_address
                                                     })
 
+    receptor_address = Nominal::InvoiceAttributes::Address.new({
+                                                                       street: "13",
+                                                                       exterior_number: "102",
+                                                                       neighborhood: "Fco. Montejo",
+                                                                       locality: "Merida",
+                                                                       municipality: "Merida",
+                                                                       state: "Yucatan",
+                                                                       country: "México",
+                                                                       postal_code: "97210"
+                                                                   })
 
     receptor = Nominal::InvoiceAttributes::Receptor.new({
                                                             rfc: "AAD990814BP7",
                                                             name: "Empresa de Victor",
+                                                            receptor_address: receptor_address
                                                         })
 
     withholding = Nominal::InvoiceAttributes::Withholding.new({
@@ -109,8 +119,8 @@ describe Nominal::Invoice do
     Nominal.api_base = "http://api.nominal.dev:3000"
 
     it "create invoice stamping it" do
-      invoice = Nominal::Invoice.stamp_xml(invoice_data, cert, key)
-      p invoice.inspect
+      status = Nominal::Invoice.stamp_xml(invoice_data, cert, key)
+      p status.inspect
     end
 
   end

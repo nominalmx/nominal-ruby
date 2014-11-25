@@ -32,6 +32,10 @@ module Nominal
       data.seal = key.seal(pre_sealed_xml)
       xml = data.to_xml.gsub(/\n/, '')
 
+      errors = Nominal::InvoiceUtils::SchemaValidator.validate_xml xml
+
+      raise "Error al construir factura: #{errors.inspect}" unless errors.empty?
+
       body = { xml: Base64.encode64(xml) }
 
       url = [self.url, 'stamp_xml'].join('/')

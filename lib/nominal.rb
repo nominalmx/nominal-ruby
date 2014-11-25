@@ -9,6 +9,7 @@ require "nominal/version"
 
 #API Operations
 require "nominal/operations/find"
+require "nominal/operations/create"
 require "nominal/operations/custom_action"
 
 #Invoice utils
@@ -22,6 +23,7 @@ require "nominal/invoice_attributes/properties"
 require "nominal/invoice_attributes/concept"
 require "nominal/invoice_attributes/issuer"
 require "nominal/invoice_attributes/receptor"
+require "nominal/invoice_attributes/address"
 require "nominal/invoice_attributes/fiscal_address"
 require "nominal/invoice_attributes/issued_address"
 require "nominal/invoice_attributes/tax"
@@ -45,6 +47,7 @@ require "nominal/nominal_object"
 require "nominal/resource"
 require "nominal/requestor"
 require "nominal/invoice"
+require "nominal/issuer"
 require "nominal/util"
 require "nominal/money_utils"
 
