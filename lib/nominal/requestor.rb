@@ -50,8 +50,6 @@ module Nominal
         Error.error_handler(e, "")
       end
 
-      p response.inspect
-
       if response.status != 200
         Error.error_handler(JSON.parse(response.body), response.status)
       end
