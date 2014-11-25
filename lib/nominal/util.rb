@@ -4,8 +4,8 @@ module Nominal
     def self.object_classes
       @object_classes ||= {
           # business objects
-          'invoice' => Invoice,
-          'issuer' => Issuer
+          'Invoice' => Invoice,
+          'Issuer' => Issuer
       }
     end
 

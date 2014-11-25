@@ -4,6 +4,7 @@ describe Nominal::Invoice do
 
   Nominal.public_api_key = "f1490e5ea07a07a67e703ca52293e"
   Nominal.private_api_key = "f98845c8bac48ccad76211b0766fb"
+  Nominal.api_base = "http://api.nominal.dev:3000"
 
   describe "#find" do
 
@@ -121,6 +122,18 @@ describe Nominal::Invoice do
     it "create invoice stamping it" do
       status = Nominal::Invoice.stamp_xml(invoice_data, cert, key)
       p status.inspect
+    end
+
+  end
+
+  describe "#cancel" do
+
+    Nominal.api_base = "http://api.nominal.dev:3000"
+
+    it "cancels a valid invoice" do
+      invoice = Nominal::Invoice.find("5ea969e3debc91a9c6607f02")
+      invoice = invoice.cancel
+      expect(invoice.status).to eq("OK")
     end
 
   end

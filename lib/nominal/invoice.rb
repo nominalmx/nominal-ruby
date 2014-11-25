@@ -44,6 +44,10 @@ module Nominal
 
     end
 
+    def cancel
+      custom_action(:post, 'cancel')
+    end
+
   end
 
 end
