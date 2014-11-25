@@ -15,10 +15,10 @@ module Nominal
         emisor_attr[:rfc] = self.rfc
         emisor_attr[:nombre] = self.name unless self.name.nil?
         xml.Emisor(emisor_attr) {
-          fiscal_address.to_xml(xml) unless fiscal_address.nil?
-          issued_address.to_xml(xml) unless issued_address.nil?
+          self.fiscal_address.to_xml(xml) unless self.fiscal_address.nil?
+          self.issued_address.to_xml(xml) unless self.issued_address.nil?
           xml.RegimenFiscal({
-                                Regimen: fiscal_regime
+                                Regimen: self.fiscal_regime
                             })
         }
 

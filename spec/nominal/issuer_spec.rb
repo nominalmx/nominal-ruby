@@ -11,7 +11,10 @@ describe Nominal::Issuer do
 
     it "create" do
 
-      data = {rfc: "GOYA900416GM0"}
+      data = {
+              rfc: "AAD990814BP7",
+              regime: "RÉGIMEN GENERAL DE LEY PERSONAS MORALES"
+      }
 
       status = Nominal::Issuer.create(data)
       p status.inspect
