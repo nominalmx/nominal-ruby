@@ -132,7 +132,7 @@ describe Nominal::Invoice do
 
     it "cancels a valid invoice" do
       invoice = Nominal::Invoice.find("5ea969e3debc91a9c6607f02")
-      invoice = invoice.cancel
+      invoice = invoice.cancel(pdf: true)
       expect(invoice.status).to eq("OK")
     end
 

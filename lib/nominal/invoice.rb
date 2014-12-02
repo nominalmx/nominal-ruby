@@ -44,8 +44,8 @@ module Nominal
 
     end
 
-    def cancel
-      custom_action(:post, 'cancel')
+    def cancel(pdf = nil)
+      custom_action(:post, 'cancel', nil, pdf)
     end
 
   end
