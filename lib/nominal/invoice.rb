@@ -48,6 +48,11 @@ module Nominal
       custom_action(:post, 'cancel', nil, pdf)
     end
 
+    def send_to_mail(to, subject=nil, issuer_id=nil)
+      body = { to: to, subject: subject, issuer_id: issuer_id}
+      custom_action(:post, 'mail', nil, body)
+    end
+
   end
 
 end

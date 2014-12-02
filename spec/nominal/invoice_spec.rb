@@ -138,4 +138,22 @@ describe Nominal::Invoice do
 
   end
 
+  describe "#send_to_mail" do
+
+    Nominal.api_base = "http://api.nominal.dev:3000"
+
+    let(:email){ "john@nominal.mx" }
+
+    it "sends to specified mail" do
+
+      invoice =   Nominal::Invoice.find("5ea969e3debc91a9c6607f02")
+      issuer_id = "71976758dae2410bb9758401"
+
+      response = invoice.send_to_mail(email, nil, issuer_id)
+      p response.inspect
+
+    end
+
+  end
+
 end
