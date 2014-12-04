@@ -24,6 +24,9 @@ module Nominal
       attr_reader :enc_pem
       attr_reader :data
 
+      #Base name
+      attr_reader :file_name
+
       # Crea una llave privada
       # @param  file [IO, String] El 'path' de esta llave o los bytes de la misma
       # @param  password=nil [String, nil] El password de esta llave
@@ -33,6 +36,7 @@ module Nominal
         @password = password
         if File.file?(file)
           @path = file
+          @file_name = File.basename file
           @pem_path = file + ".pem"
           @enc_pem_path = @pem_path + ".enc"
           generate_pem

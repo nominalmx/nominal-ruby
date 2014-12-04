@@ -1,68 +1,59 @@
 module Nominal
   class Error < Exception
-    attr_reader :message
-    attr_reader :message_to_purchaser
-    attr_reader :type
-    attr_reader :code
-    attr_reader :param
 
-    def initialize(message=nil, message_to_purchaser=nil, type=nil, code=nil, param=nil)
+    attr_reader :message
+    attr_reader :errors
+    attr_reader :code
+
+    def initialize(message=nil, errors=nil, code=nil)
       @message = message
-      @message_to_purchaser = message_to_purchaser
-      @type = type
+      @errors = errors
       @code = code
-      @param = param
     end
+
     def class_name
       self.class.name.split('::')[-1]
     end
+
     def self.error_handler(resp, code)
-      if resp.instance_of?(Hash)
-        @message = resp["message"] if resp.has_key?('message')
-        @message_to_purchaser = resp["message_to_purchaser"] if resp.has_key?('message_to_purchaser')
-        @type = resp["type"] if resp.has_key?('type')
-        @code = resp["code"] if resp.has_key?('code')
-        @param = resp["param"] if resp.has_key?('param')
-      end
+
       if code == nil or code == 0 or code == nil or code == ""
         raise NoConnectionError.new(resp.to_s)
       end
+
+      if resp.instance_of?(Hash)
+        @message = resp["message"] if resp.has_key?('message')
+        @errors = resp["errors"] if resp.has_key?('errors')
+        @code = code
+      end
+
       case code
         when 400
-          raise MalformedRequestError.new(@message, @message_to_purchaser, @type, @code, @params)
+          raise MalformedRequestError.new(@message, @errors, @code)
         when 401
-          raise AuthenticationError.new(@message, @message_to_purchaser, @type, @code, @params)
+          raise AuthenticationError.new(@message, @errors, @code)
         when 402
-          raise ProcessingError.new(@message, @message_to_purchaser, @type, @code, @params)
+          raise ProcessingError.new(@message, @errors, @code)
         when 404
-          raise ResourceNotFoundError.new(@message, @message_to_purchaser, @type, @code, @params)
+          raise ResourceNotFoundError.new(@message, @errors, @code)
         when 422
-          raise ParameterValidationError.new(@message, @message_to_purchaser, @type, @code, @params)
+          raise UnprocessableEntityError.new(@message, @errors, @code)
         when 500
-          raise ApiError.new(@message, @message_to_purchaser, @type, @code, @params)
+          raise ApiError.new(@message, @errors, @code)
         else
-          raise Error.new(@message, @message_to_purchaser, @type, @code, @params)
+          raise Error.new(@message, @errors, @code)
       end
+
     end
-  end
-  class ApiError < Error
+
   end
 
-  class NoConnectionError < Error
-  end
+  class ApiError < Error; end
+  class NoConnectionError < Error; end
+  class AuthenticationError < Error; end
+  class UnprocessableEntityError < Error; end
+  class ProcessingError < Error; end
+  class ResourceNotFoundError < Error; end
+  class MalformedRequestError < Error; end
 
-  class AuthenticationError < Error
-  end
-
-  class ParameterValidationError < Error
-  end
-
-  class ProcessingError < Error
-  end
-
-  class ResourceNotFoundError < Error
-  end
-
-  class MalformedRequestError < Error
-  end
 end
