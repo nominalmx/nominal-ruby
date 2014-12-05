@@ -18,13 +18,14 @@ describe Nominal::Invoice do
 
   let!(:key) do
     root = File.expand_path "../..", __FILE__
-    key_path = File.join(root, 'fixtures', 'AAD990814BP7.key').to_s
+    key_path = File.join(root, 'fixtures', 'GOYA780416GM0.key').to_s
     Nominal::InvoiceUtils::Key.new key_path, "12345678a"
   end
 
   let!(:cert) do
     root = File.expand_path "../..", __FILE__
-    path = File.join(root, 'fixtures', 'AAD990814BP7.cer').to_s
+    #
+    path = File.join(root, 'fixtures', 'GOYA780416GM0.cer').to_s
     Nominal::InvoiceUtils::Certificate.new path
   end
 
@@ -42,7 +43,7 @@ describe Nominal::Invoice do
                                                                    })
 
     issuer = Nominal::InvoiceAttributes::Issuer.new({
-                                                        rfc: "AAD990814BP7",
+                                                        rfc: "GOYA780416GM0",
                                                         name: "MACRO CLIENT EMPRESA 2",
                                                         fiscal_regime: "RÉGIMEN GENERAL DE LEY PERSONAS MORALES",
                                                         fiscal_address: fiscal_address
@@ -85,10 +86,9 @@ describe Nominal::Invoice do
                                                           amount: 4,
                                                       })
 
-
     invoice_data = Nominal::InvoiceXmlData.new({
                                                    folio: 10,
-                                                   expedition_date: Date.new(2014, 7, 10),
+                                                   expedition_date: Date.today,
                                                    subtotal: 16.000000,
                                                    total: 18.5600000,
                                                    payment_form: "PAGO EN UNA SOLA EXHIBICIÓN",
@@ -98,8 +98,6 @@ describe Nominal::Invoice do
                                                    issuer: issuer,
                                                    receptor: receptor,
                                                    invoice_type: 0,
-                                                   api_reference: "ksdfkkasdfalsdfasdfl",
-                                                   public_id: "0934039302440",
                                                    status: 2,
                                                    voucher_type_text: "egreso",
                                                    environment: 1,

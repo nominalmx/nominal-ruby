@@ -36,7 +36,8 @@ module Nominal
 
       raise "Error al construir factura: #{errors.inspect}" unless errors.empty?
 
-      body = { xml: Base64.encode64(xml) }
+      body = { xml: Base64.encode64(xml), via_ux: false }
+      #body = { xml: Base64.encode64(xml) }
 
       url = [self.url, 'stamp_xml'].join('/')
       response = Requestor.new.request(:post, url, nil, body)

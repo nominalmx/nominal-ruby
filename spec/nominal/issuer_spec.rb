@@ -11,12 +11,23 @@ describe Nominal::Issuer do
     it "creates new issuer" do
 
       attr = {
-              rfc: "AAD990814BP7",
+              rfc: "GOYA780416GM0",
               regime: "RÉGIMEN GENERAL DE LEY PERSONAS MORALES"
       }
 
       status = Nominal::Issuer.create(attr)
       p status.inspect
+
+    end
+
+  end
+
+  describe "#find" do
+
+    it "creates new issuer" do
+
+      issuer = Nominal::Issuer.find("8afd150a08e795d8f8c804c0")
+      p issuer.inspect
 
     end
 
@@ -28,13 +39,13 @@ describe Nominal::Issuer do
 
     let!(:certificate_path) do
       root = File.expand_path "../..", __FILE__
-      path = File.join(root, 'fixtures', 'AAD990814BP7.cer').to_s
+      path = File.join(root, 'fixtures', 'GOYA780416GM0.cer').to_s
       path
     end
 
     let!(:private_key_path) do
       root = File.expand_path "../..", __FILE__
-      path = File.join(root, 'fixtures', 'AAD990814BP7.key').to_s
+      path = File.join(root, 'fixtures', 'GOYA780416GM0.key').to_s
       path
     end
 
@@ -44,7 +55,7 @@ describe Nominal::Issuer do
       path
     end
 
-    let!(:rfc) { "AAD990814BP7" }
+    let!(:rfc) { "GOYA780416GM0" }
 
     let!(:issuer_type) { Nominal::Issuer::MORAL }
 
