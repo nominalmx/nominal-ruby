@@ -2,6 +2,9 @@ PATH
   remote: .
   specs:
     nominal (0.0.1)
+      faraday
+      json
+      mime-types
 
 GEM
   remote: https://rubygems.org/
@@ -35,9 +38,6 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.5)
-  faraday
-  json
-  mime-types
   nokogiri (~> 1.6.2.1)
   nominal!
   openssl_pkcs8
