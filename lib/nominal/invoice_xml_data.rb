@@ -3,6 +3,16 @@ module Nominal
   class InvoiceXmlData
     include Properties
 
+    #InvoiceType
+    INVOICE_TYPE = 0
+    PAYROLL_TYPE = 2
+    DONEE_TYPE = 5
+
+    #VoucherType
+    VOUCHER_EXPENDITURE = "egreso"
+    VOUCHER_INCOME = "ingreso"
+    VOUCHER_TRANSLATE = "traslado"
+
     has_properties :version,
                    :expedition_date,
                    :seal,

@@ -52,7 +52,7 @@ describe Nominal::Invoice do
     receptor_address = Nominal::InvoiceAttributes::Address.new({
                                                                        street: "13",
                                                                        exterior_number: "102",
-                                                                       neighborhood: "Fco. Montejo",
+                                                                       neighborhood: "Centro",
                                                                        locality: "Merida",
                                                                        municipality: "Merida",
                                                                        state: "Yucatan",
@@ -61,8 +61,8 @@ describe Nominal::Invoice do
                                                                    })
 
     receptor = Nominal::InvoiceAttributes::Receptor.new({
-                                                            rfc: "AAD990814BP7",
-                                                            name: "Empresa de Victor",
+                                                            rfc: "CGA030903UC3",
+                                                            name: "Javier Olan",
                                                             receptor_address: receptor_address
                                                         })
 
@@ -82,28 +82,23 @@ describe Nominal::Invoice do
                                                           quantity: 4,
                                                           unit: "N/A",
                                                           description: "Juguete",
-                                                          unit_value: 16.00,
+                                                          unit_value: 26.00,
                                                           amount: 4,
                                                       })
 
     invoice_data = Nominal::InvoiceXmlData.new({
-                                                   folio: 10,
+                                                   serie: "C",
+                                                   folio: 2,
                                                    expedition_date: Date.today,
-                                                   subtotal: 16.000000,
-                                                   total: 18.5600000,
+                                                   subtotal: 43.000000,
+                                                   total: 47.5600000,
                                                    payment_form: "PAGO EN UNA SOLA EXHIBICIÓN",
                                                    payment_method: "EFECTIVO",
                                                    currency: "MXN",
                                                    expedition_place: "YUCATÁN, MÉXICO",
                                                    issuer: issuer,
                                                    receptor: receptor,
-                                                   invoice_type: 0,
-                                                   status: 2,
-                                                   voucher_type_text: "egreso",
-                                                   environment: 1,
-                                                   fiscal_regime: "RÉGIMEN GENERAL DE LEY PERSONAS MORALES",
-                                                   supplier: 1,
-                                                   precision: 2,
+                                                   voucher_type_text: Nominal::InvoiceXmlData::VOUCHER_EXPENDITURE,
                                                    concepts: [concept],
                                                    tax: tax
                                                })
