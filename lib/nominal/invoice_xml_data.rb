@@ -9,9 +9,9 @@ module Nominal
     DONEE_TYPE = 5
 
     #VoucherType
-    VOUCHER_EXPENDITURE = "egreso"
-    VOUCHER_INCOME = "ingreso"
-    VOUCHER_TRANSLATE = "traslado"
+    VOUCHER_EXPENDITURE = Object.const_get "egreso"
+    VOUCHER_INCOME = Object.const_get "ingreso"
+    VOUCHER_TRANSLATE = Object.const_get "traslado"
 
     has_properties :version,
                    :expedition_date,
