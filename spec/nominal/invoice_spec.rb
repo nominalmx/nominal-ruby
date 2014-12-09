@@ -98,7 +98,7 @@ describe Nominal::Invoice do
                                                    expedition_place: "YUCATÁN, MÉXICO",
                                                    issuer: issuer,
                                                    receptor: receptor,
-                                                   voucher_type_text: Nominal::InvoiceXmlData::VOUCHER_EXPENDITURE,
+                                                   voucher_type_text: Nominal::InvoiceXmlData.voucher_expenditure,
                                                    concepts: [concept],
                                                    tax: tax
                                                })

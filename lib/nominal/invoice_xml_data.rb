@@ -8,11 +8,6 @@ module Nominal
     PAYROLL_TYPE = 2
     DONEE_TYPE = 5
 
-    #VoucherType
-    VOUCHER_EXPENDITURE = Object.const_get "egreso"
-    VOUCHER_INCOME = Object.const_get "ingreso"
-    VOUCHER_TRANSLATE = Object.const_get "traslado"
-
     has_properties :version,
                    :expedition_date,
                    :seal,
@@ -47,6 +42,18 @@ module Nominal
                    #Complementos
                    :payroll,
                    :donee
+
+    def self.voucher_expenditure
+      "egreso"
+    end
+
+    def self.voucher_income
+      "ingreso"
+    end
+
+    def self.voucher_translate
+      "traslado"
+    end
 
     def to_xml
 
