@@ -6,17 +6,62 @@ describe Nominal::Issuer do
   Nominal.private_api_key = "f98845c8bac48ccad76211b0766fb"
   Nominal.api_base = "http://api.nominal.dev:3000"
 
+  let!(:private_key_password) { "12345678a" }
+
+  let!(:certificate_path) do
+    root = File.expand_path "../..", __FILE__
+    path = File.join(root, 'fixtures', 'GOYA780416GM0.cer').to_s
+    path
+  end
+
+  let!(:private_key_path) do
+    root = File.expand_path "../..", __FILE__
+    path = File.join(root, 'fixtures', 'GOYA780416GM0.key').to_s
+    path
+  end
+
+  let!(:certificate) do
+    root = File.expand_path "../..", __FILE__
+    path = File.join(root, 'fixtures', 'GOYA780416GM0.cer').to_s
+    File.open(path)
+  end
+
+  let!(:private_key) do
+    root = File.expand_path "../..", __FILE__
+    path = File.join(root, 'fixtures', 'GOYA780416GM0.key').to_s
+    File.open(path)
+  end
+
+  let!(:issuer_data) { {
+      rfc: "GOYA780416GM0",
+      regime: "PERSONA FÍSICA CON ACTIVIDAD EMPRESARIAL Y PROFESIONAL"
+  } }
+
   describe "#create" do
 
-    it "creates new issuer" do
+    it "creates new issuer without files" do
 
-      attr = {
-              rfc: "GOYA780416GM0",
-              regime: "RÉGIMEN GENERAL DE LEY PERSONAS MORALES"
-      }
+      response = Nominal::Issuer.create(issuer_data)
 
-      status = Nominal::Issuer.create(attr)
-      p status.inspect
+      if response.keys.include? 'errors'
+        p response.errors.values
+      else
+        p response.issuer.inspect
+        p response.issuer.id.inspect
+      end
+
+    end
+
+    it "creates new issuer with files" do
+
+      response = Nominal::Issuer.create_with_certs(issuer_data, certificate, private_key, private_key_password)
+
+      if response.keys.include? 'errors'
+        p response.errors.values
+      else
+        p response.issuer.inspect
+        p response.issuer.id.inspect
+      end
 
     end
 
@@ -24,10 +69,29 @@ describe Nominal::Issuer do
 
   describe "#find" do
 
-    it "creates new issuer" do
-
-      issuer = Nominal::Issuer.find("8afd150a08e795d8f8c804c0")
+    it "finds issuer" do
+      issuer = Nominal::Issuer.find("80e2450d21f39b826097eb13")
       p issuer.inspect
+    end
+
+  end
+
+  describe "#update" do
+
+    it "finds issuer" do
+      issuer = Nominal::Issuer.find("80e2450d21f39b826097eb13")
+      updated = issuer.update(rfc: "IUFT6111159L3 ")
+      p updated.inspect
+    end
+
+    it "updates certs and keys" do
+
+      response = Nominal::Issuer.find("04930a4898d4b25f313754c6")
+      issuer = response.issuer
+
+      response = issuer.update_certs(certificate, private_key, private_key_password)
+
+      p response.inspect
 
     end
 
