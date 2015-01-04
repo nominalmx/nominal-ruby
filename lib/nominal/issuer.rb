@@ -3,6 +3,7 @@ module Nominal
   class Issuer < Resource
     include Nominal::Operations::Find
     include Nominal::Operations::Create
+    include Nominal::Operations::Update
 
     MORAL = 0
     PHYSICAL = 1
@@ -46,6 +47,30 @@ module Nominal
       url = [self.url, 'validate_certs'].join('/')
       response = Requestor.new.request(:post, url, nil, validate_params)
       Util.convert_to_nominal_object(response, self.class_name)
+
+    end
+
+    def update_certs(certificate, private_key, private_key_password)
+
+      body = {
+          certificate: { file_data: Base64.encode64(certificate.read), filename: File.basename(certificate.to_path), content_type: "application/octet-stream" },
+          private_key: { file_data: Base64.encode64(private_key.read), filename: File.basename(private_key.to_path), content_type: "application/octet-stream" },
+          private_key_password: private_key_password
+      }
+
+      self.update(body)
+
+    end
+
+    def self.create_with_certs(body, certificate, private_key, private_key_password)
+
+      body = body.merge(
+          certificate: { file_data: Base64.encode64(certificate.read), filename: File.basename(certificate.to_path), content_type: "application/octet-stream" },
+          private_key: { file_data: Base64.encode64(private_key.read), filename: File.basename(private_key.to_path), content_type: "application/octet-stream" },
+          private_key_password: private_key_password
+      )
+
+      self.create(body)
 
     end
 
