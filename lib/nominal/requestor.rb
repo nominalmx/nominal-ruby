@@ -27,6 +27,7 @@ module Nominal
       meth = method.downcase
 
       begin
+
         conn = Faraday.new(url: url) do |faraday|
           faraday.adapter Faraday.default_adapter
         end
@@ -38,13 +39,9 @@ module Nominal
 
         conn.params = params unless params.nil?
 
-        response = if body.nil?
-                     conn.method(meth).call
-                   else
-                     # post payload as JSON
-                     json = JSON.generate(body)
-                     conn.post { |req| req.body = json}
-                   end
+        response = conn.method(meth).call do |req|
+          req.body = JSON.generate(body) unless body.nil?
+        end
 
       rescue Exception => e
         Error.error_handler(e, "")
