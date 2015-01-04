@@ -11,6 +11,7 @@ require "nominal/version"
 require "nominal/operations/find"
 require "nominal/operations/create"
 require "nominal/operations/custom_action"
+require "nominal/operations/update"
 
 #Invoice utils
 require "nominal/invoice_utils/certificate"

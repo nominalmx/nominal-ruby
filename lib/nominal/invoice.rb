@@ -16,11 +16,9 @@ module Nominal
     end
 
     def url
-=begin
-      unless id = self['id']
+      unless id = self.id
         raise InvalidRequestError.new("Could not determine which URL to request: #{self.class} instance has invalid ID: #{id.inspect}", 'id')
       end
-=end
       "#{self.class.url}/#{CGI.escape(id)}"
     end
 
@@ -36,7 +34,7 @@ module Nominal
 
       raise "Error al construir factura: #{errors.inspect}" unless errors.empty?
 
-      body = { xml: Base64.encode64(xml), via_ux: false }
+      body = {xml: Base64.encode64(xml), via_ux: false}
       #body = { xml: Base64.encode64(xml) }
 
       url = [self.url, 'stamp_xml'].join('/')
@@ -45,12 +43,17 @@ module Nominal
 
     end
 
-    def cancel(pdf = nil)
-      custom_action(:post, 'cancel', nil, pdf)
+    def cancel(certificate, key, pdf = nil)
+
+      certificate_pem = certificate.to_pem
+      encrypt_pem = key.encrypt_pem(finkok_password)
+
+      params = {certificate: certificate_pem, key: encrypt_pem}
+      custom_action(:post, 'cancel', params, pdf)
     end
 
     def send_to_mail(to, subject=nil, issuer_id=nil)
-      body = { to: to, subject: subject, issuer_id: issuer_id}
+      body = {to: to, subject: subject, issuer_id: issuer_id}
       custom_action(:post, 'mail', nil, body)
     end
 
