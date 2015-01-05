@@ -50,11 +50,13 @@ module Nominal
 
     end
 
-    def update_certs(certificate, private_key, private_key_password)
+    def update_certs(certificate_contents, private_key_contents, private_key_password)
+
+      rfc = self.rfc
 
       body = {
-          certificate: { file_data: Base64.encode64(certificate.read), filename: File.basename(certificate.to_path), content_type: "application/octet-stream" },
-          private_key: { file_data: Base64.encode64(private_key.read), filename: File.basename(private_key.to_path), content_type: "application/octet-stream" },
+          certificate: { file_data: Base64.encode64(certificate_contents), filename: "#{rfc}.cer" , content_type: "application/octet-stream" },
+          private_key: { file_data: Base64.encode64(private_key_contents), filename: "#{rfc}.key", content_type: "application/octet-stream" },
           private_key_password: private_key_password
       }
 
@@ -62,11 +64,13 @@ module Nominal
 
     end
 
-    def self.create_with_certs(body, certificate, private_key, private_key_password)
+    def self.create_with_certs(body, certificate_contents, private_key_contents, private_key_password)
+
+      rfc = body['rfc']
 
       body = body.merge(
-          certificate: { file_data: Base64.encode64(certificate.read), filename: File.basename(certificate.to_path), content_type: "application/octet-stream" },
-          private_key: { file_data: Base64.encode64(private_key.read), filename: File.basename(private_key.to_path), content_type: "application/octet-stream" },
+          certificate: { file_data: Base64.encode64(certificate_contents), filename: "#{rfc}.cer" , content_type: "application/octet-stream" },
+          private_key: { file_data: Base64.encode64(private_key_contents), filename: "#{rfc}.key", content_type: "application/octet-stream" },
           private_key_password: private_key_password
       )
 

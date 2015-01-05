@@ -8,28 +8,16 @@ describe Nominal::Issuer do
 
   let!(:private_key_password) { "12345678a" }
 
-  let!(:certificate_path) do
+  let!(:certificate_contents) do
     root = File.expand_path "../..", __FILE__
     path = File.join(root, 'fixtures', 'GOYA780416GM0.cer').to_s
-    path
+    File.open(path).read
   end
 
-  let!(:private_key_path) do
+  let!(:private_key_contents) do
     root = File.expand_path "../..", __FILE__
     path = File.join(root, 'fixtures', 'GOYA780416GM0.key').to_s
-    path
-  end
-
-  let!(:certificate) do
-    root = File.expand_path "../..", __FILE__
-    path = File.join(root, 'fixtures', 'GOYA780416GM0.cer').to_s
-    File.open(path)
-  end
-
-  let!(:private_key) do
-    root = File.expand_path "../..", __FILE__
-    path = File.join(root, 'fixtures', 'GOYA780416GM0.key').to_s
-    File.open(path)
+    File.open(path).read
   end
 
   let!(:issuer_data) { {
@@ -54,7 +42,7 @@ describe Nominal::Issuer do
 
     it "creates new issuer with files" do
 
-      response = Nominal::Issuer.create_with_certs(issuer_data, certificate, private_key, private_key_password)
+      response = Nominal::Issuer.create_with_certs(issuer_data, certificate_contents, private_key_contents, private_key_password)
 
       if response.keys.include? 'errors'
         p response.errors.values
@@ -86,10 +74,10 @@ describe Nominal::Issuer do
 
     it "updates certs and keys" do
 
-      response = Nominal::Issuer.find("04930a4898d4b25f313754c6")
+      response = Nominal::Issuer.find("4d978db1db048a570c21c398")
       issuer = response.issuer
 
-      response = issuer.update_certs(certificate, private_key, private_key_password)
+      response = issuer.update_certs(certificate_contents, private_key_contents, private_key_password)
 
       p response.inspect
 
