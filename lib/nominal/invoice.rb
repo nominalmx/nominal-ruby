@@ -43,13 +43,8 @@ module Nominal
 
     end
 
-    def cancel(certificate, key, pdf = nil)
-
-      certificate_pem = certificate.to_pem
-      encrypt_pem = key.encrypt_pem(finkok_password)
-
-      params = {certificate: certificate_pem, key: encrypt_pem}
-      custom_action(:post, 'cancel', params, pdf)
+    def cancel(pdf = nil)
+      custom_action(:post, 'cancel', nil, pdf)
     end
 
     def send_to_mail(to, subject=nil, issuer_id=nil)

@@ -124,7 +124,8 @@ describe Nominal::Invoice do
     Nominal.api_base = "http://api.nominal.dev:3000"
 
     it "cancels a valid invoice" do
-      response = Nominal::Invoice.find("3c2ebad134a0dcee348cc3a5")
+
+      response = Nominal::Invoice.find("0ff77103638e8ae187d9069c")
       invoice = response.invoice
 
       response = invoice.cancel(pdf: true)
