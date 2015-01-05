@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nominal (0.0.1)
+    nominal (0.1.0)
       faraday
       json
       mime-types
