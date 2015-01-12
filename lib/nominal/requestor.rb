@@ -44,18 +44,25 @@ module Nominal
         end
 
       rescue Exception => e
-        Error.error_handler(e, "")
+        NominalApiError.error_handler(e, "")
       end
 
-      if response.status != 200
-        Error.error_handler(JSON.parse(response.body), response.status)
+      json = JSON.parse(response.body)
+
+      if response_its_error? json
+        NominalApiError.error_handler(JSON.parse(response.body), response.status)
       end
 
-      JSON.parse(response.body)
+      json
 
     end
 
     private
+    def response_its_error? json
+      return true if json.nil?
+      json['status'] == "ERROR"
+    end
+
     def get_token
       signature = OpenSSL::HMAC.hexdigest('sha256', self.private_api_key, time.to_s)
       "Nominal #{self.public_api_key}:#{signature}"

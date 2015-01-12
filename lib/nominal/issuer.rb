@@ -2,7 +2,6 @@ module Nominal
 
   class Issuer < Resource
     include Nominal::Operations::Find
-    include Nominal::Operations::Create
     include Nominal::Operations::Update
 
     MORAL = 0
@@ -74,7 +73,9 @@ module Nominal
           private_key_password: private_key_password
       )
 
-      self.create(body)
+      url = self.url
+      response = Requestor.new.request(:post, url, nil, body)
+      Util.convert_to_nominal_object(response, self.class_name)
 
     end
 

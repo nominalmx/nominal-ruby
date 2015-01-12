@@ -44,8 +44,8 @@ describe Nominal::Invoice do
 
     issuer = Nominal::InvoiceAttributes::Issuer.new({
                                                         rfc: "GOYA780416GM0",
-                                                        name: "MACRO CLIENT EMPRESA 2",
-                                                        fiscal_regime: "RÉGIMEN GENERAL DE LEY PERSONAS MORALES",
+                                                        name: "John Doe",
+                                                        fiscal_regime: "PERSONA FÍSICA CON ACTIVIDAD EMPRESARIAL Y PROFESIONAL",
                                                         fiscal_address: fiscal_address
                                                     })
 
@@ -88,8 +88,8 @@ describe Nominal::Invoice do
 
     invoice_data = Nominal::InvoiceXmlData.new({
                                                    serie: "C",
-                                                   folio: 2,
-                                                   expedition_date: Date.today,
+                                                   folio: 5,
+                                                   expedition_date: DateTime.now,
                                                    subtotal: 43.000000,
                                                    total: 47.5600000,
                                                    payment_form: "PAGO EN UNA SOLA EXHIBICIÓN",

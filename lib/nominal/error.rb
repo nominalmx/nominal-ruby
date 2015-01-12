@@ -1,18 +1,19 @@
 module Nominal
-  class Error < Exception
+
+  class NominalApiError < Exception
 
     attr_reader :message
-    attr_reader :errors
+    attr_reader :status
     attr_reader :code
 
-    def initialize(message=nil, errors=nil, code=nil)
+    def initialize(status=nil, message=nil, code=nil)
+      @status = status
       @message = message
-      @errors = errors
       @code = code
     end
 
-    def class_name
-      self.class.name.split('::')[-1]
+    def inspect
+      "#<#{self.class}:0x#{self.object_id.to_s(16)}" + " status: #{status}, message: #{message}, code: #{code}"
     end
 
     def self.error_handler(resp, code)
@@ -22,38 +23,25 @@ module Nominal
       end
 
       if resp.instance_of?(Hash)
+        @status = resp["status"] if resp.has_key?('status')
         @message = resp["message"] if resp.has_key?('message')
-        @errors = resp["errors"] if resp.has_key?('errors')
-        @code = code
+        @code = resp["code"] if resp.has_key?('code')
       end
 
-      case code
-        when 400
-          raise MalformedRequestError.new(@message, @errors, @code)
-        when 401
-          raise AuthenticationError.new(@message, @errors, @code)
-        when 402
-          raise ProcessingError.new(@message, @errors, @code)
-        when 404
-          raise ResourceNotFoundError.new(@message, @errors, @code)
-        when 422
-          raise UnprocessableEntityError.new(@message, @errors, @code)
-        when 500
-          raise ApiError.new(@message, @errors, @code)
-        else
-          raise Error.new(@message, @errors, @code)
-      end
+      raise NominalApiError.new(@status, @message, @code)
 
     end
 
   end
 
-  class ApiError < Error; end
-  class NoConnectionError < Error; end
-  class AuthenticationError < Error; end
-  class UnprocessableEntityError < Error; end
-  class ProcessingError < Error; end
-  class ResourceNotFoundError < Error; end
-  class MalformedRequestError < Error; end
+  class ApiError < NominalApiError; end
+  class NoConnectionError < NominalApiError; end
+  class AuthenticationError < NominalApiError; end
+  class UnprocessableEntityError < NominalApiError; end
+  class ProcessingError < NominalApiError; end
+  class ResourceNotFoundError < NominalApiError; end
+  class MalformedRequestError < NominalApiError; end
+
+
 
 end

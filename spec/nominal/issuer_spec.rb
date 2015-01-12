@@ -20,35 +20,24 @@ describe Nominal::Issuer do
     File.open(path).read
   end
 
-  let!(:issuer_data) { {
+  let!(:issuer_data) {
+    {
       rfc: "GOYA780416GM0",
-      regime: "PERSONA FÍSICA CON ACTIVIDAD EMPRESARIAL Y PROFESIONAL"
-  } }
+      regime: "RÉGIMEN GENERAL DE LEY PERSONAS MORALES",
+      person_type: "moral"
+    }
+  }
 
   describe "#create" do
 
-    it "creates new issuer without files" do
-
-      response = Nominal::Issuer.create(issuer_data)
-
-      if response.keys.include? 'errors'
-        p response.errors.values
-      else
-        p response.issuer.inspect
-        p response.issuer.id.inspect
-      end
-
-    end
-
     it "creates new issuer with files" do
 
-      response = Nominal::Issuer.create_with_certs(issuer_data, certificate_contents, private_key_contents, private_key_password)
-
-      if response.keys.include? 'errors'
-        p response.errors.values
-      else
+      begin
+        response = Nominal::Issuer.create_with_certs(issuer_data, certificate_contents, private_key_contents, private_key_password)
         p response.issuer.inspect
         p response.issuer.id.inspect
+      rescue Exception => e
+        p "Exception #{e.inspect}"
       end
 
     end
