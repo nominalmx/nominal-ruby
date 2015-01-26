@@ -42,11 +42,23 @@ describe Nominal::Invoice do
                                                                        postal_code: "64743"
                                                                    })
 
+    issued_address = Nominal::InvoiceAttributes::IssuedAddress.new({
+                                                                       street: "GABRIEL TEPEPA",
+                                                                       exterior_number: "19",
+                                                                       neighborhood: "COLORINES",
+                                                                       locality: "Cuautla",
+                                                                       municipality: "Cuautla",
+                                                                       state: "Morelos",
+                                                                       country: "México",
+                                                                       postal_code: "64743"
+                                                                   })
+
     issuer = Nominal::InvoiceAttributes::Issuer.new({
                                                         rfc: "GOYA780416GM0",
                                                         name: "John Doe",
                                                         fiscal_regime: "PERSONA FÍSICA CON ACTIVIDAD EMPRESARIAL Y PROFESIONAL",
-                                                        fiscal_address: fiscal_address
+                                                        fiscal_address: fiscal_address,
+                                                        issued_address: issued_address
                                                     })
 
     receptor_address = Nominal::InvoiceAttributes::Address.new({
@@ -125,13 +137,17 @@ describe Nominal::Invoice do
 
     it "cancels a valid invoice" do
 
-      response = Nominal::Invoice.find("0ff77103638e8ae187d9069c")
+      response = Nominal::Invoice.find("0bb5c276b33ef963bc916fd6")
       invoice = response.invoice
 
       response = invoice.cancel(pdf: true)
 
       p response.inspect
       #expect(invoice.status).to eq("OK")
+    end
+
+    it "throws error canceling unknown invoice" do
+      expect{Nominal::Invoice.find("0ff77103638e8ae187d9069c").invoice.cancel}.to raise_error(Nominal::NominalApiError)
     end
 
   end
