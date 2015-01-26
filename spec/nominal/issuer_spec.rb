@@ -47,7 +47,7 @@ describe Nominal::Issuer do
   describe "#find" do
 
     it "finds issuer" do
-      issuer = Nominal::Issuer.find("80e2450d21f39b826097eb13")
+      issuer = Nominal::Issuer.find("9ffbcb4d39a0f1b464ce69b4")
       p issuer.inspect
     end
 
@@ -63,10 +63,12 @@ describe Nominal::Issuer do
 
     it "updates certs and keys" do
 
-      response = Nominal::Issuer.find("4d978db1db048a570c21c398")
-      issuer = response.issuer
+      #response = Nominal::Issuer.find("4d978db1db048a570c21c398")
+      #issuer = response.issuer
 
-      response = issuer.update_certs(certificate_contents, private_key_contents, private_key_password)
+      response = Nominal::Issuer.update_certs("9ffbcb4d39a0f1b464ce69b4", "GOYA780416GM0", certificate_contents, private_key_contents, private_key_password)
+
+      #response = issuer.update_certs(certificate_contents, private_key_contents, private_key_password)
 
       p response.inspect
 
