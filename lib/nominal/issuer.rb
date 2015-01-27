@@ -19,11 +19,6 @@ module Nominal
     end
 
     def url
-=begin
-      unless id = self['id']
-        raise InvalidRequestError.new("Could not determine which URL to request: #{self.class} instance has invalid ID: #{id.inspect}", 'id')
-      end
-=end
       "#{self.class.url}/#{CGI.escape(id)}"
     end
 
