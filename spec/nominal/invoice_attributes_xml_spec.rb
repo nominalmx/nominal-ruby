@@ -40,12 +40,23 @@ describe Nominal::InvoiceAttributes::Issuer do
                                                                        postal_code: "64743"
                                                                    })
 
+    issued_address = Nominal::InvoiceAttributes::IssuedAddress.new({
+                                                                       street: "GABRIEL TEPEPA",
+                                                                       exterior_number: "19",
+                                                                       neighborhood: "COLORINES",
+                                                                       locality: "Cuautla",
+                                                                       municipality: "Cuautla",
+                                                                       municipality: "Morelos",
+                                                                       country: "México",
+                                                                       postal_code: "64743"
+                                                                   })
 
     issuer = Nominal::InvoiceAttributes::Issuer.new({
                                                         rfc: "AAD990814BP7",
                                                         name: "Empresa de Victor",
                                                         fiscal_regime: 0,
-                                                        fiscal_address: fiscal_address
+                                                        fiscal_address: fiscal_address,
+                                                        issued_address: issued_address
                                                     })
 
     issuer
