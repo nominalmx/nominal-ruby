@@ -47,8 +47,11 @@ describe Nominal::Issuer do
   describe "#find" do
 
     it "finds issuer" do
+
+      response = Nominal::Issuer.create_with_certs(issuer_data, certificate_contents, private_key_contents, private_key_password)
       issuer = Nominal::Issuer.find("9ffbcb4d39a0f1b464ce69b4")
       p issuer.inspect
+
     end
 
   end
@@ -63,12 +66,10 @@ describe Nominal::Issuer do
 
     it "updates certs and keys" do
 
-      #response = Nominal::Issuer.find("4d978db1db048a570c21c398")
-      #issuer = response.issuer
+      response = Nominal::Issuer.find("4d978db1db048a570c21c398")
+      issuer = response.issuer
 
-      response = Nominal::Issuer.update_certs("9ffbcb4d39a0f1b464ce69b4", "GOYA780416GM0", certificate_contents, private_key_contents, private_key_password)
-
-      #response = issuer.update_certs(certificate_contents, private_key_contents, private_key_password)
+      response = issuer.update_certs(certificate_contents, private_key_contents, private_key_password)
 
       p response.inspect
 
@@ -114,8 +115,8 @@ describe Nominal::Issuer do
       begin
         rfc = "AAA010101AAA"
         Nominal::Issuer.validate_certs(rfc, issuer_type, certificate_path, private_key_path, private_key_password)
-      rescue Nominal::UnprocessableEntityError => e
-        expect(e.errors["certificate"].first).to eq("El RFC del certificado no es igual al RFC de la empresa")
+      rescue Nominal::NominalApiError => e
+        expect(e.message).to eq("El RFC del certificado no es igual al RFC de la empresa")
       end
 
     end
@@ -125,8 +126,8 @@ describe Nominal::Issuer do
       begin
         private_key_password = "AAA010101AAA"
         Nominal::Issuer.validate_certs(rfc, issuer_type, certificate_path, private_key_path, private_key_password)
-      rescue Nominal::UnprocessableEntityError => e
-        expect(e.errors["private_key_password"].first).to eq("La contraseña de la llave privada es inválida")
+      rescue Nominal::NominalApiError => e
+        expect(e.message).to eq("La contraseña de la llave privada es inválida")
       end
 
     end
@@ -136,7 +137,7 @@ describe Nominal::Issuer do
       begin
         Nominal::Issuer.validate_certs(rfc, issuer_type, certificate_path, another_key_path, private_key_password)
       rescue Nominal::UnprocessableEntityError => e
-        expect(e.errors["private_key"].first).to eq("El certificado no concuerda con la llave privada")
+        expect(e.message).to eq("El certificado no concuerda con la llave privada")
       end
 
     end
