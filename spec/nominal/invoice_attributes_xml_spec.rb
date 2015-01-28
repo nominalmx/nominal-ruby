@@ -19,7 +19,7 @@ describe Nominal::InvoiceAttributes::Concept do
     end
 
     xml = builder.to_xml
-    expect(xml).to eq("<?xml version=\"1.0\"?>\n<Conceptos>\n  <Concepto cantidad=\"4.0\" unidad=\"4\" descripcion=\"4\" valorUnitario=\"0.4E1\" importe=\"0.16E2\"/>\n</Conceptos>\n")
+    expect(xml).to eq("<?xml version=\"1.0\"?>\n<Conceptos>\n  <Concepto cantidad=\"4.0\" unidad=\"4\" descripcion=\"4\" valorUnitario=\"4.0\" importe=\"16.0\"/>\n</Conceptos>\n")
 
   end
 
@@ -73,8 +73,7 @@ describe Nominal::InvoiceAttributes::Issuer do
     end
 
     xml = builder.to_xml
-
-    expect(xml).to eq("<?xml version=\"1.0\"?>\n<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\">\n  <cfdi:Emisor rfc=\"AAD990814BP7\" nombre=\"Empresa de Victor\">\n    <cfdi:DomicilioFiscal pais=\"M&#xE9;xico\" calle=\"GABRIEL TEPEPA\" municipio=\"Morelos\" noExterior=\"19\" colonia=\"COLORINES\" localidad=\"Cuautla\" codigoPostal=\"64743\"/>\n    <cfdi:RegimenFiscal Regimen=\"0\"/>\n  </cfdi:Emisor>\n</cfdi:Comprobante>\n")
+    expect(xml).to eq("<?xml version=\"1.0\"?>\n<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\">\n  <cfdi:Emisor rfc=\"AAD990814BP7\" nombre=\"Empresa de Victor\">\n    <cfdi:DomicilioFiscal pais=\"M&#xE9;xico\" calle=\"GABRIEL TEPEPA\" municipio=\"Morelos\" noExterior=\"19\" colonia=\"COLORINES\" localidad=\"Cuautla\" codigoPostal=\"64743\"/>\n    <cfdi:ExpedidoEn pais=\"M&#xE9;xico\" calle=\"GABRIEL TEPEPA\" municipio=\"Morelos\" noExterior=\"19\" colonia=\"COLORINES\" localidad=\"Cuautla\" codigoPostal=\"64743\"/>\n    <cfdi:RegimenFiscal Regimen=\"0\"/>\n  </cfdi:Emisor>\n</cfdi:Comprobante>\n")
 
   end
 
@@ -116,7 +115,6 @@ describe Nominal::InvoiceAttributes::Receptor do
     end
 
     xml = builder.to_xml
-
     expect(xml).to eq("<?xml version=\"1.0\"?>\n<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\">\n  <cfdi:Receptor rfc=\"AAD990814BP7\" nombre=\"Empresa de Victor\">\n    <cfdi:DomicilioFiscal pais=\"M&#xE9;xico\" calle=\"GABRIEL TEPEPA\" municipio=\"Morelos\" noExterior=\"19\" colonia=\"COLORINES\" localidad=\"Cuautla\" codigoPostal=\"64743\"/>\n  </cfdi:Receptor>\n</cfdi:Comprobante>\n")
 
   end
@@ -138,7 +136,7 @@ describe Nominal::InvoiceAttributes::Tax do
 
     xml = builder.to_xml
 
-    expect(xml).to eq("<?xml version=\"1.0\"?>\n<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\">\n  <cfdi:Impuestos totalImpuestosTrasladados=\"0.26E1\"/>\n</cfdi:Comprobante>\n")
+    expect(xml).to eq("<?xml version=\"1.0\"?>\n<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\">\n  <cfdi:Impuestos totalImpuestosTrasladados=\"2.56\"/>\n</cfdi:Comprobante>\n")
 
   end
 
@@ -158,8 +156,7 @@ describe Nominal::InvoiceAttributes::Payroll do
     end
 
     xml = builder.to_xml
-
-    expect(xml).to eq("<?xml version=\"1.0\"?>\n<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\">\n  <cfdi:Impuestos totalImpuestosTrasladados=\"0.26E1\"/>\n</cfdi:Comprobante>\n")
+    expect(xml).to eq("<?xml version=\"1.0\"?>\n<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\">\n  <cfdi:Impuestos totalImpuestosTrasladados=\"2.56\"/>\n</cfdi:Comprobante>\n")
 
   end
 
