@@ -44,12 +44,6 @@ module Nominal
 
     end
 
-    def self.update_certs(id, rfc, certificate_contents, private_key_contents, private_key_password)
-      issuer = Nominal::Issuer.new(id)
-      issuer.rfc = rfc
-      issuer.update_certs(certificate_contents, private_key_contents, private_key_password)
-    end
-
     def update_certs(certificate_contents, private_key_contents, private_key_password)
 
       rfc = self.rfc
