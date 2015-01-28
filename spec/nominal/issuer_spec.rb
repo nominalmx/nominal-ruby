@@ -22,9 +22,9 @@ describe Nominal::Issuer do
 
   let!(:issuer_data) {
     {
-      rfc: "GOYA780416GM0",
-      regime: "RÉGIMEN GENERAL DE LEY PERSONAS MORALES",
-      person_type: "moral"
+        rfc: "GOYA780416GM0",
+        regime: "RÉGIMEN GENERAL DE LEY PERSONAS MORALES",
+        person_type: "moral"
     }
   }
 
@@ -49,20 +49,27 @@ describe Nominal::Issuer do
     it "finds issuer" do
 
       response = Nominal::Issuer.create_with_certs(issuer_data, certificate_contents, private_key_contents, private_key_password)
-      issuer = Nominal::Issuer.find("9ffbcb4d39a0f1b464ce69b4")
-      p issuer.inspect
+      issuer = response.issuer
+
+      retreived = Nominal::Issuer.find(issuer.id).issuer
+      expect(issuer.id).to eq(retreived.id)
 
     end
+
+    it "fails to find issuer" do
+
+      begin
+        Nominal::Issuer.find("9ffbcb4d39a0f1b464ce69b4")
+      rescue Nominal::NominalApiError => e
+        expect(e.message).to eq("Recurso no encontrado")
+      end
+
+    end
+
 
   end
 
   describe "#update" do
-
-    it "finds issuer" do
-      issuer = Nominal::Issuer.find("80e2450d21f39b826097eb13")
-      updated = issuer.update(rfc: "IUFT6111159L3 ")
-      p updated.inspect
-    end
 
     it "updates certs and keys" do
 
