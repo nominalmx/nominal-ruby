@@ -18,7 +18,7 @@ module Nominal
 
     def api_url(url='')
       #api_base = Nominal.api_base
-      api_base = "http://api.nominal.mx"
+      api_base = "https://api.nominal.mx"
       api_base + url
     end
 
@@ -30,11 +30,11 @@ module Nominal
 
       begin
 
-        #connection = Faraday.new url, :ssl => false
+        conn = Faraday.new url, :ssl => {:verify => false}
 
-        conn = Faraday.new(url: url) do |faraday|
-          faraday.adapter Faraday.default_adapter
-        end
+        #conn = Faraday.new(url: url) do |faraday|
+        #  faraday.adapter Faraday.default_adapter
+        #end
 
         conn.headers['Authorization'] = get_token
         conn.headers['x-nominal-time'] = self.time.to_s
