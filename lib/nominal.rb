@@ -54,7 +54,7 @@ require "nominal/money_utils"
 
 module Nominal
 
-  @api_base = 'http://api.nominal.mx'
+  @api_base = 'https://api.nominal.mx'
   @api_version = '0.0.1'
 
   def self.api_base

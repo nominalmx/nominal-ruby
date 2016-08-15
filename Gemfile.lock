@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nominal (0.1.1)
+    nominal (0.1.2)
       faraday
       json
       mime-types
@@ -11,10 +11,12 @@ GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.2.5)
-    faraday (0.9.0)
+    faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
-    json (1.8.1)
-    mime-types (2.4.3)
+    json (2.0.2)
+    mime-types (3.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2016.0521)
     mini_portile (0.6.0)
     multipart-post (2.0.0)
     nokogiri (1.6.2.1)
@@ -43,3 +45,6 @@ DEPENDENCIES
   openssl_pkcs8
   rake
   rspec
+
+BUNDLED WITH
+   1.10.6

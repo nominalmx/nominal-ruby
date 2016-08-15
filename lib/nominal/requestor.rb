@@ -17,7 +17,8 @@ module Nominal
     end
 
     def api_url(url='')
-      api_base = Nominal.api_base
+      #api_base = Nominal.api_base
+      api_base = "http://api.nominal.mx"
       api_base + url
     end
 
@@ -26,7 +27,10 @@ module Nominal
       url = self.api_url(url)
       meth = method.downcase
 
+
       begin
+
+        #connection = Faraday.new url, :ssl => false
 
         conn = Faraday.new(url: url) do |faraday|
           faraday.adapter Faraday.default_adapter
